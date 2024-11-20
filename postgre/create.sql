@@ -5,17 +5,18 @@ DROP TABLE IF EXISTS Pasien, RekamMedis, DokumenRekamMedis;
 DROP TABLE IF EXISTS Kecamatan, Kelurahan, Spesialisasi, Ruang;
 DROP TABLE IF EXISTS Transaksi, PendaftaranToJadwal;
 
-DROP TYPE IF EXISTS GENDER, BOOLEAN, GOL_DARAH,ROLE_P, STATUS_DAFTAR,HARI,METODE;
+DROP TYPE IF EXISTS GENDER, GOL_DARAH,ROLE_P, STATUS_DAFTAR,HARI,METODE;
 
 CREATE TABLE  Kecamatan(
     id_kecamatan INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    nama_kecamatan VARCHAR(200) UNIQUE NOT NULL
+    nama_kecamatan VARCHAR(200) NOT NULL
 );
 
 CREATE TABLE Kelurahan(
     id_kelurahan INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    nama_kelurahan VARCHAR(200) UNIQUE NOT NULL,
-    id_kecamatan INT REFERENCES Kecamatan(id_kecamatan) NOT NULL
+    nama_kelurahan VARCHAR(200) NOT NULL,
+    id_kecamatan INT REFERENCES Kecamatan(id_kecamatan) NOT NULL,
+	UNIQUE(id_kecamatan, nama_kelurahan)
 );
 
 CREATE TABLE Spesialisasi(
