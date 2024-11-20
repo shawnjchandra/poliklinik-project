@@ -9,18 +9,18 @@ DROP TYPE IF EXISTS GENDER, ACTIVE, GOL_DARAH,ROLE_P, STATUS_DAFTAR,HARI,METODE;
 
 CREATE TABLE  Kecamatan(
     id_kecamatan INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    nama_kecamatan VARCHAR(20)
+    nama_kecamatan VARCHAR(200)
 );
 
 CREATE TABLE Kelurahan(
     id_kelurahan INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    nama_kelurahan VARCHAR(20),
+    nama_kelurahan VARCHAR(200),
     id_kecamatan INT REFERENCES Kecamatan(id_kecamatan)
 );
 
 CREATE TABLE Spesialisasi(
     id_spesialisasi INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    nama_spesialisasi VARCHAR(20)
+    nama_spesialisasi VARCHAR(255)
 );
 
 CREATE TABLE Ruang(
@@ -40,10 +40,10 @@ CREATE TYPE GOL_DARAH AS ENUM ('A','B','AB','O');
 -- PASIEN
 CREATE TABLE Pasien(
     id_pasien INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    nama VARCHAR(20) NOT NULL,
+    nama VARCHAR(255) NOT NULL,
     no_telp CHAR(12) NOT NULL,
-    email VARCHAR(20) NOT NULL UNIQUE,
-    pass VARCHAR(20) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    pass VARCHAR(255) NOT NULL,
     no_rkm_medis CHAR(6) NOT NULL UNIQUE,
     created_at DATE NOT NULL,
     jenis_kelamin GENDER NOT NULL,
@@ -84,10 +84,10 @@ CREATE TYPE ROLE_P AS ENUM ('Dokter', 'SisAdmin','PetAdmin','Perawat');
 
 CREATE TABLE Pegawai(
     id_pegawai INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    nama VARCHAR(20) NOT NULL,
+    nama VARCHAR(255) NOT NULL,
     no_telp CHAR(12) NOT NULL,
-    email VARCHAR(20) NOT NULL UNIQUE,
-    pass VARCHAR(20) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    pass VARCHAR(255) NOT NULL,
     NIP CHAR(18) NOT NULL UNIQUE,
     created_at DATE NOT NULL,
     is_active ACTIVE NOT NULL,
