@@ -96,7 +96,7 @@ INSERT INTO Kelurahan (nama_kelurahan, id_kecamatan) VALUES
 ('Babakan Tarogong', (SELECT id_kecamatan FROM Kecamatan WHERE nama_kecamatan = 'Bojongloa Kaler')),
 ('Jamika', (SELECT id_kecamatan FROM Kecamatan WHERE nama_kecamatan = 'Bojongloa Kaler')),
 ('Kopo', (SELECT id_kecamatan FROM Kecamatan WHERE nama_kecamatan = 'Bojongloa Kaler')),
-('Suka Asih', (SELECT id_kecamatan FROM Kecamatan WHERE nama_kecamatan = 'Bojongloa Kaler')),
+('Suka Asih', (SELECT id_kecamatan FROM Kecamatan WHERE nama_kecamatan = 'Bojongloa Kaler'));
 
 -- Bojongloa Kidul (id_kecamatan 11)
 INSERT INTO Kelurahan (nama_kelurahan, id_kecamatan) VALUES 
@@ -259,4 +259,3 @@ INSERT INTO Kelurahan (nama_kelurahan, id_kecamatan) VALUES
 
 
 ---------------------------------------------
-
