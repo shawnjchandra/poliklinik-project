@@ -38,6 +38,9 @@ CREATE TYPE GENDER AS ENUM ('perempuan','laki');
 -- golongan darah
 CREATE TYPE GOL_DARAH AS ENUM ('a','b','ab','o');
 
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+
+
 -- PASIEN
 CREATE TABLE Pasien(
     id_pasien INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -45,7 +48,7 @@ CREATE TABLE Pasien(
     no_telp CHAR(12) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    no_rkm_medis CHAR(6) NOT NULL UNIQUE,
+    no_rkm_medis UUID DEFAULT gen_random_uuid() NOT NULL UNIQUE,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
     jenis_kelamin GENDER NOT NULL,
     tanggal_lahir DATE NOT NULL,
