@@ -29,6 +29,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 
 // Routes import
+import pasienRoute from "./routes/pasien.js";
 
 // Cookie parse
 app.use(cookieParser());
@@ -40,6 +41,7 @@ app.use(express.json());
 app.use(cors());
 
 // Routes
+app.use("/api/pasien", pasienRoute);
 
 // app.get("/test", authMiddleware);
 
