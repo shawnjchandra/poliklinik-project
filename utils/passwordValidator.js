@@ -1,6 +1,6 @@
 
 
-export const passwordFormat = (password) =>{
+export const isPassFormatCorrec = (password) =>{
 
     /*Password Policty
         - Long = min 16 chars
