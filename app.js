@@ -64,7 +64,7 @@ app.use(errorHandler);
 
 // Run the server
 const PORT = 5000;
-const HOST = "0.0.0.0";
+const HOST = "127.0.0.1";
 app.listen(PORT, HOST, () => {
   try {
     console.log(`Server is running on port ${PORT}`);
