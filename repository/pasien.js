@@ -8,3 +8,21 @@ export const insertPasien = async ({ nama, no_telp, email, jenis_kelamin, tangga
 
   return queryResult;
 };
+
+export const getPasien = async ({email, password}) => {
+  const queryText = "SELECT * FROM Pasien WHERE email LIKE $1 AND password LIKE $2";
+  const values = [email,password];
+
+  const queryResult = await pool.query(queryText, values);
+
+  return queryResult;
+};
+
+export const getPassword = async({password}) => {
+  const queryText = "SELECT * FROM Pasien WHERE password LIKE $1";
+  const values = [password];
+
+  const queryResult = await pool.query(queryText,values);
+
+  return queryResult;
+}
