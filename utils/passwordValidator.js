@@ -1,7 +1,6 @@
-import { BadRequestError } from "../errors/BadRequestError";
-import { getPassword } from "../repository/pasien";
 
-export const isPasswordValid = (password) =>{
+
+export const passwordFormat = (password) =>{
 
     /*Password Policty
         - Long = min 16 chars
@@ -12,6 +11,14 @@ export const isPasswordValid = (password) =>{
     
     // const isUnique = getPassword(password).length === 0 ? true : false ;
     
-    return passwordRegex.test(password);
+    return passwordRegex.test(password)
+
+}
+
+export const isPasswordInjection = (password) => {
+    const sqlInjectionRegex = /['"=;# \-\*()]/;
+
+    return sqlInjectionRegex.test(password);
+
 
 }
