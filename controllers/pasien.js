@@ -1,5 +1,4 @@
 import { BadRequestError } from "../errors/BadRequestError.js";
-import { getPasien, insertPasien } from "../repository/pasien.js";
 import * as pasienService from "../services/pasien.js";
 
 export const registerPasien = async (req, res) => {
@@ -9,7 +8,7 @@ export const registerPasien = async (req, res) => {
 };
 
 export const loginPasien = async (req, res) => {
-  const queryResult = await getPasien(req.body);
+  const token = await pasienService.loginPasien(req.body);
 
-  return res.json(queryResult);
+  return res.json({ success: true, token });
 };
