@@ -1,12 +1,11 @@
 import { BadRequestError } from "../errors/BadRequestError.js";
 import { getPasien, insertPasien } from "../repository/pasien.js";
-
-import { hashPassword } from "../utils/encryptPassword.js";
+import * as pasienService from "../services/pasien.js";
 
 export const registerPasien = async (req, res) => {
-  const queryResult = await insertPasien({ ...req.body, password: hashPassword(req.body.password) });
+  await pasienService.registerPasien(req.body);
 
-  return res.json(queryResult);
+  return res.json({ success: true });
 };
 
 export const loginPasien = async (req, res) => {
