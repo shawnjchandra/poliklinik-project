@@ -1,15 +1,13 @@
 import express from "express";
 import { registerPasien } from "../controllers/pasien.js";
 import { loginPasien } from "../controllers/pasien.js";
-import { isPasswordInjection } from "../utils/passwordValidator.js";
+import { validateLogin, validateRegister } from "../middleware/validator/pasien.js";
 
+const router = express.Router();
 
+router.post("/register", validateRegister, registerPasien);
 
-const   router = express.Router();
-
-router.post("/register", registerPasien);
-
-router.post("/login", loginPasien);
+router.post("/login", validateLogin, loginPasien);
 
 // router.post("/inject", isPasswordInjection );
 
