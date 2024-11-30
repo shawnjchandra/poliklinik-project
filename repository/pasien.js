@@ -1,4 +1,5 @@
 import pool from "../db/db.js";
+import { hashPassword } from "../utils/encryptPassword.js";
 
 export const insertPasien = async ({ nama, no_telp, email, jenis_kelamin, tanggal_lahir, id_kelurahan, password }) => {
   const queryText = "INSERT INTO Pasien (nama, no_telp, email, jenis_kelamin, tanggal_lahir, id_kelurahan, password) VALUES ($1, $2, $3, $4, $5, $6, $7)";
@@ -10,8 +11,9 @@ export const insertPasien = async ({ nama, no_telp, email, jenis_kelamin, tangga
 };
 
 export const getPasien = async ({email, password}) => {
-  const queryText = "SELECT * FROM Pasien WHERE email LIKE $1 AND password LIKE $2";
-  const values = [email,password];
+  const queryText = "SELECT * FROM Pasien WHERE email LIKE $1";
+  
+  const values = [email];
 
   const queryResult = await pool.query(queryText, values);
 
@@ -26,3 +28,4 @@ export const getPassword = async({password}) => {
 
   return queryResult;
 }
+
