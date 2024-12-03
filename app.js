@@ -44,19 +44,9 @@ app.use(cors());
 app.use("/api/pasien", pasienRoute);
 
 // app.get("/test", authMiddleware);
-
-app.get("/test", async (req, res) => {
-  // return res.json({ success: true });
-
-  const a = await axios.get("http://192.168.77.50:8080/api/test");
-  return res.json(a.data);
-  try {
-    const a = await pool.query("SELECT 5+5;");
-    console.log(a);
-    return res.json(a.rows);
-  } catch (err) {
-    throw new InternalServerError("error");
-  }
+import { authMiddleware } from "./middleware/authMiddleware.js";
+app.get("/test", authMiddleware("pasien"), async (req, res) => {
+  return res.json("lol");
 });
 
 //Error handling
