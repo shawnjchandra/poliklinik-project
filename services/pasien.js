@@ -6,8 +6,9 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 export const registerPasien = async ({ nama, no_telp, email, jenis_kelamin, tanggal_lahir, id_kelurahan, password }) => {
-  const hashedPassword = hashPassword(password);
-  const result = await pasienRepo.insertPasien({ nama, no_telp, email, jenis_kelamin, tanggal_lahir, id_kelurahan, hashedPassword });
+  const hashedPassword = await hashPassword(password);
+
+  const result = await pasienRepo.insertPasien({ nama, no_telp, email, jenis_kelamin, tanggal_lahir, id_kelurahan, password: hashedPassword });
   return result;
 };
 
@@ -18,8 +19,8 @@ export const loginPasien = async ({ email, password }) => {
     throw new NotFoundError("email is not registered");
   }
 
-  const pasien = pasien.rows[0];
-  const isPasswordMatch = await bcrypt.compare(pasien.password, password);
+  const pasien = pasienQueryResult.rows[0];
+  const isPasswordMatch = await bcrypt.compare(password, pasien.password);
 
   if (!isPasswordMatch) {
     throw new UnauthorizedError("incorrect password");

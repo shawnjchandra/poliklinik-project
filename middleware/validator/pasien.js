@@ -11,13 +11,13 @@ export const validateRegister = async (req, res, next) => {
     }
   }
 
-  const { email, jenis_kelamin, tanggal_lahir } = req.body;
+  const { email, jenis_kelamin, tanggal_lahir, password } = req.body;
   if (jenis_kelamin !== "perempuan" && jenis_kelamin !== "laki") {
     throw new BadRequestError("jenis_kelamin must be either perempuan or laki");
   }
 
-  if(!isPassFormatCorrect(password)){
-    throw new BadRequestError('Password format doesn`t seem to be correct');
+  if (!isPassFormatCorrect(password)) {
+    throw new BadRequestError("Password format doesn`t seem to be correct");
   }
 
   if (!isValidDate(tanggal_lahir)) {
@@ -31,16 +31,13 @@ export const validateRegister = async (req, res, next) => {
   next();
 };
 
-
 export const validateLogin = async (req, res, next) => {
   const requiredField = ["email", "password"];
   for (const field of requiredField) {
-
     if (!req.body[field]) {
       throw new BadRequestError(`${field} must be included`);
     }
   }
-
 
   const { email } = req.body;
 
@@ -50,4 +47,3 @@ export const validateLogin = async (req, res, next) => {
 
   next();
 };
-
