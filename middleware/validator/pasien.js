@@ -4,15 +4,14 @@ import { isValidEmail } from "../../utils/emailValidator.js";
 import { isPassFormatCorrect, isPasswordInjection } from "../../utils/passwordValidator.js";
 
 export const validateRegister = async (req, res, next) => {
-  const { nama, no_telp, email, jenis_kelamin, tanggal_lahir, id_kelurahan, password } = req.body;
-
-  const requiredField = { nama, no_telp, email, jenis_kelamin, tanggal_lahir, id_kelurahan, password };
-  for (const field in requiredField) {
-    if (!requiredField[field]) {
+  const requiredField = ["nama", "no_telp", "email", "jenis_kelamin", "tanggal_lahir", "id_kelurahan", "password"];
+  for (const field of requiredField) {
+    if (!req.body[field]) {
       throw new BadRequestError(`field ${field} must be included`);
     }
   }
 
+  const { email, jenis_kelamin, tanggal_lahir } = req.body;
   if (jenis_kelamin !== "perempuan" && jenis_kelamin !== "laki") {
     throw new BadRequestError("jenis_kelamin must be either perempuan or laki");
   }
@@ -33,29 +32,22 @@ export const validateRegister = async (req, res, next) => {
 };
 
 
-export const validateLogin = async (req,res,next) =>{
-  const { email, password} = req.body;
+export const validateLogin = async (req, res, next) => {
+  const requiredField = ["email", "password"];
+  for (const field of requiredField) {
 
-  const requiredField = { email, password };
-
-  for (let field in requiredField) {
-    console.log(req.body[field] + field);
     if (!req.body[field]) {
       throw new BadRequestError(`${field} must be included`);
     }
   }
 
-  if(!isPassFormatCorrect(password)){
-    throw new BadRequestError('Password format doesn`t seem to be correct');
-  }
-  
-  if(!isPasswordInjection(password)){
-    throw new BadRequestError('Forbidden characters included');
 
+  const { email } = req.body;
+
+  if (!isValidEmail(email)) {
+    throw new BadRequestError("invalid email format");
   }
 
   next();
+};
 
-
-
-}
