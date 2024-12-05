@@ -30,6 +30,7 @@ import cookieParser from "cookie-parser";
 
 // Routes import
 import pasienRoute from "./routes/pasien.js";
+import spesialisasiRoute from "./routes/spesialisasi.js";
 
 // Cookie parse
 app.use(cookieParser());
@@ -41,7 +42,9 @@ app.use(express.json());
 app.use(cors());
 
 // Routes
+
 app.use("/api/pasien", pasienRoute);
+app.use("/api/spesialisasi", spesialisasiRoute);
 
 // app.get("/test", authMiddleware);
 
