@@ -1,4 +1,6 @@
 export const isValidDate = (dateString) => {
+  
+  // YEAR-MONTH-DAY
   const regex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
 
   if (!regex.test(dateString)) {
