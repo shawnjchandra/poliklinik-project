@@ -9,3 +9,16 @@ export const createSpesialisasi = async (nama_spesialisasi) => {
 
   return queryResult;
 };
+
+export const getSpesialisasi = async (id_spesialisasi) => {
+  let getSpesialisasiQuery = "SELECT * FROM Spesialisasi";
+  const values = [];
+  if (id_spesialisasi != null) {
+    getSpesialisasiQuery += " WHERE id_spesialisasi = $1";
+    values.push(id_spesialisasi);
+  }
+
+  const queryResult = await pool.query(getSpesialisasiQuery, values);
+
+  return queryResult;
+};
