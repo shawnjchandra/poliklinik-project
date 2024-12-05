@@ -31,6 +31,8 @@ import cookieParser from "cookie-parser";
 // Routes import
 import pasienRoute from "./routes/pasien.js";
 
+import pendaftaranRoute from "./routes/pendaftaran.js";
+
 // Cookie parse
 app.use(cookieParser());
 
@@ -44,6 +46,8 @@ app.use(cors());
 app.use("/api/pasien", pasienRoute);
 
 // app.get("/test", authMiddleware);
+
+app.use("/api/pendaftaran", pendaftaranRoute);
 
 app.get("/test", async (req, res) => {
   // return res.json({ success: true });
