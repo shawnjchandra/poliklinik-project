@@ -32,6 +32,7 @@ import cookieParser from "cookie-parser";
 import pasienRoute from "./routes/pasien.js";
 import spesialisasiRoute from "./routes/spesialisasi.js";
 import pegawaiRoute from "./routes/pegawai.js";
+import ruangRoute from "./routes/ruang.js";
 
 // Cookie parse
 app.use(cookieParser());
@@ -47,6 +48,7 @@ app.use(cors());
 app.use("/api/pasien", pasienRoute);
 app.use("/api/spesialisasi", spesialisasiRoute);
 app.use("/api/pegawai", pegawaiRoute);
+app.use("/api/ruang", ruangRoute);
 
 // app.get("/test", authMiddleware);
 
