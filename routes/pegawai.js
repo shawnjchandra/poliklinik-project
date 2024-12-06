@@ -5,6 +5,8 @@ import {
   validateRegisterPegawai,
 } from "../middleware/validator/pegawai.js";
 import {
+  getAllDokter,
+  getDokterById,
   loginPegawai,
   registerDokter,
   registerPegawai,
@@ -17,5 +19,7 @@ router.post("/register/dokter", validateRegisterDokter, registerDokter);
 router.post("/register/pegawai", validateRegisterPegawai, registerPegawai);
 
 router.post("/login", validateLogin, loginPegawai);
+router.get("/dokter/", getAllDokter);
+router.get("/dokter/:id_pegawai", getDokterById);
 
 export default router;

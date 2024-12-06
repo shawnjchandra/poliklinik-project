@@ -17,3 +17,17 @@ export const loginPegawai = async (req, res) => {
 
   return res.json({ success: true, token });
 };
+
+export const getAllDokter = async (req, res) => {
+  const result = await pegawaiService.getAllDokter();
+
+  return res.json(result);
+};
+
+export const getDokterById = async (req, res) => {
+  const id_pegawai = req.params.id_pegawai;
+
+  const result = await pegawaiService.getDokterById(id_pegawai);
+
+  return res.json(result);
+};
