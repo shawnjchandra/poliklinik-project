@@ -1,16 +1,17 @@
 import pool from "../db/db.js";
 
-export const createRekamMedis = async ({id_pasien}) => {
+export const createRekamMedis = async (id_pasien) => {
     const queryText = "INSERT INTO RekamMedis (id_pasien) VALUES ($1);";
 
     const values = [id_pasien];
 
-    const queryResult = pool.query(queryText,values);
+    const queryResult = await pool.query(queryText,values);
 
     return queryResult;
 };
 
-export const updateInformasiDasar = async ({tinggi_badan, berat_badan, golongan_darah, diastolik, sistolik, denyut_nadi, id_rkm_med }) => {
+export const updateInformasiDasar = async ({ tinggi_badan, berat_badan, golongan_darah, diastolik, sistolik, denyut_nadi, id_rkm_med }) => {
+    console.log("di repo : "+ id_rkm_med);
     
     const queryText = "UPDATE RekamMedis SET tinggi_badan = $1, berat_badan = $2, golongan_darah = $3, diastolik= $4, sistolik = $5, denyut_nadi = $6 WHERE id_rkm_med = $7";
 
@@ -22,41 +23,44 @@ export const updateInformasiDasar = async ({tinggi_badan, berat_badan, golongan_
 }
 
 export const updateDiagnosaPasien = async ({resep_obat, prognosis, diag_penunjang, pemeriksaan_fisik, pemeriksaan_penunjang, riwayat_penyakit, keluhan, id_rkm_med }) => {
-    const queryText = "UPDATE RekamMedis SET resep_obat = $1, prognosis = $2, diag_penunjang =$3, pemeriksaan_fisik = $4, pemeriksaan_penunjang = $5, riwayat_penyakit = $6, keluhan = $7 WHERE id_rkm_med = $8 ";
+
+    const queryText = "UPDATE RekamMedis SET resep_obat = $1, prognosis_tindakan_lanjut = $2, diag_penunjang =$3, pemeriksaan_fisik = $4, pemeriksaan_penunjang = $5, riwayat_penyakit = $6, keluhan = $7 WHERE id_rkm_med = $8 ";
 
     const values = [resep_obat, prognosis, diag_penunjang, pemeriksaan_fisik, pemeriksaan_penunjang, riwayat_penyakit, keluhan, id_rkm_med];
 
-    const queryResult = pool.query(queryText, values);
+    const queryResult = await pool.query(queryText, values);
 
     return queryResult;
 };
 
-export const getRekamMedisByIdPasien = async ({id_pasien}) => {
+export const getRekamMedisByIdPasien = async (id_pasien) => {
     const queryText = "SELECT * FROM RekamMedis WHERE id_pasien = $1";
 
     const values = [id_pasien];
 
-    const queryResult = pool.query(queryText,values);
+    const queryResult = await pool.query(queryText,values);
 
     return queryResult;
 };
 
-export const getLatestRekamMedisByIdPasien = async ({id_pasien}) => {
+export const getLatestRekamMedisByIdPasien = async (id_pasien) => {
     const queryText = "SELECT * FROM RekamMedis WHERE id_pasien = $1 ORDER BY id_rkm_med DESC";
-
+    console.log("di latest "+id_pasien)
+    
     const values = [id_pasien];
-
-    const queryResult = pool.query(queryText,values);
-
-    return queryResult;
+    
+    const queryResult = await pool.query(queryText,values);
+    
+    // console.log("di latest isi row "+queryResult.rows[0].id_rkm_med);
+    return queryResult.rows[0] || null  ;
 };
 
-export const getRekamMedisByIdRM = async ({id_rkm_med}) => {
+export const getRekamMedisByIdRM = async (id_rkm_med) => {
     const queryText = "SELECT * FROM RekamMedis WHERE id_rkm_med = $1";
 
     const values = [id_rkm_med];
 
-    const queryResult = pool.query(queryText,values);
+    const queryResult = await pool.query(queryText,values);
 
     return queryResult;
 };
