@@ -31,6 +31,7 @@ import cookieParser from "cookie-parser";
 // Routes import
 import pasienRoute from "./routes/pasien.js";
 import jadwalPraktikRoute from "./routes/jadwalPraktik.js";
+import pegawaiRoute from "./routes/pegawai.js";
 
 // Cookie parse
 app.use(cookieParser());
@@ -44,6 +45,7 @@ app.use(cors());
 // Routes
 app.use("/api/pasien", pasienRoute);
 app.use("/api/jadwal-praktik", jadwalPraktikRoute);
+app.use("/api/pegawai", pegawaiRoute);
 
 // app.get("/test", authMiddleware);
 
