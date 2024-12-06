@@ -9,3 +9,13 @@ export const insertJadwalPraktik = async ({ hari, start_time, end_time, kuota, i
 
   return queryResult;
 };
+
+export const getJadwalPraktik = async (id_pegawai) => {
+  const queryText =
+    "SELECT * FROM JadwalPraktikDokter jpd INNER JOIN Pegawai p ON jpd.id_pegawai = p.id_pegawai INNER JOIN Ruang r ON jpd.id_ruang = r.id_ruang INNER JOIN Spesialisasi s ON p.id_spesialisasi = s.id_spesialisasi WHERE p.id_pegawai = $1";
+  const values = [id_pegawai];
+
+  const queryResult = await pool.query(queryText, values);
+
+  return queryResult;
+};
