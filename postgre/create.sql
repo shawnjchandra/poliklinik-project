@@ -21,7 +21,8 @@ CREATE TABLE Kelurahan(
 
 CREATE TABLE Spesialisasi(
     id_spesialisasi INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    nama_spesialisasi VARCHAR(255) UNIQUE NOT NULL
+    nama_spesialisasi VARCHAR(255) UNIQUE NOT NULL,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE Ruang(
@@ -132,7 +133,8 @@ CREATE TABLE JadwalPraktikDokter (
     end_time TIME NOT NULL ,
     kuota INT NOT NULL,
     id_pegawai INT REFERENCES Pegawai(id_pegawai) NOT NULL,
-    id_ruang INT REFERENCES Ruang(id_ruang) NOT NULL
+    id_ruang INT REFERENCES Ruang(id_ruang) NOT NULL,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 CREATE TYPE METODE AS ENUM ('ovo','gopay','bca', 'tunai');
