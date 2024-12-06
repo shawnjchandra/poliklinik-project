@@ -61,5 +61,9 @@ export const loginPegawai = async ({ email, password }) => {
 export const getDokterById = async (id_pegawai) => {
   const queryResult = await pegawaiRepo.getDokterById(id_pegawai);
 
-  return queryResult.rows;
+  if (queryResult.rowCount === 0) {
+    throw new NotFoundError(`there's no dokter with id ${id_pegawai}`);
+  }
+
+  return queryResult.rows[0];
 };
