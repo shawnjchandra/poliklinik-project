@@ -11,7 +11,7 @@ export const insertJadwalPraktik = async ({ hari, start_time, end_time, kuota, i
 };
 
 export const getJadwalPraktik = async (id_pegawai) => {
-  const queryText = "SELECT * FROM JadwalPraktikDokter jpd INNER JOIN Ruang r ON jpd.id_ruang = r.id_ruang WHERE jpd.id_pegawai = $1 WHERE jpd.is_active=TRUE";
+  const queryText = "SELECT * FROM JadwalPraktikDokter jpd INNER JOIN Ruang r ON jpd.id_ruang = r.id_ruang WHERE jpd.id_pegawai = $1 AND jpd.is_active=TRUE";
   const values = [id_pegawai];
 
   const queryResult = await pool.query(queryText, values);
