@@ -18,3 +18,12 @@ export const getJadwalPraktik = async (id_pegawai) => {
 
   return queryResult;
 };
+
+export const deleteJadwalPraktik = async (id_jadwal) => {
+  const queryText = "UPDATE JadwalPraktikDokter SET is_active = FALSE WHERE id_jadwal = $1";
+  const values = [id_jadwal];
+
+  const queryResult = await pool.query(queryText, values);
+
+  return queryResult;
+};
