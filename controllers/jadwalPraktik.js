@@ -16,5 +16,8 @@ export const getJadwalPraktik = async (req, res) => {
 
 export const deleteJadwalPraktik = async (req, res) => {
   const { id_jadwal } = req.params;
-  return res.json("delete" + id_jadwal);
+
+  await jadwalPraktikService.deleteJadwalPraktik(id_jadwal);
+
+  return res.json({ success: true });
 };
