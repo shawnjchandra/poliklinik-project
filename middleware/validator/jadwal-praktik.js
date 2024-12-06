@@ -5,7 +5,7 @@ import { isValidRange, isValidTime } from "../../utils/timeValidator.js";
 export const validateCreateJadwalPraktik = async (req, res, next) => {
   const { hari, start_time, end_time, kuota, id_pegawai, id_ruang } = req.body;
 
-  const requiredField = ["hari", "start_time", "end_time", "kuota", "id_pegawai, id_ruang"];
+  const requiredField = ["hari", "start_time", "end_time", "kuota", "id_pegawai", "id_ruang"];
 
   for (const field of requiredField) {
     if (!req.body[field]) {
@@ -27,6 +27,8 @@ export const validateCreateJadwalPraktik = async (req, res, next) => {
   }
 
   if (!isValidRange(start_time, end_time)) {
-    throw new BadRequestError("invalid range");
+    throw new BadRequestError("invalid time range");
   }
+
+  next();
 };
