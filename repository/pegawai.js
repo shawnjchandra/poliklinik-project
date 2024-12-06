@@ -27,3 +27,11 @@ export const getPegawaiById = async (id_pegawai) => {
 
   return queryResult;
 };
+
+export const getDokterById = async (id_pegawai) => {
+  const queryText = "SELECT * FROM Pegawai p INNER JOIN Spesialisasi s ON p.id_spesialisasi = s.id_spesialisasi WHERE p.id_pegawai=$1 AND p.role='dokter'";
+  const values = [id_pegawai];
+  const queryResult = await pool.query(queryText, values);
+
+  return queryResult;
+};
