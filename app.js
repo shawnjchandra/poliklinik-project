@@ -33,6 +33,7 @@ import pasienRoute from "./routes/pasien.js";
 
 import pendaftaranRoute from "./routes/pendaftaran.js";
 
+import rekMedisRoute from "./routes/rekmedis.js";
 // Cookie parse
 app.use(cookieParser());
 
@@ -43,11 +44,14 @@ app.use(express.json());
 app.use(cors());
 
 // Routes
-app.use("/api/pasien", pasienRoute);
+app.use("/api/pasien", pasienRoute, rekMedisRoute);
 
 // app.get("/test", authMiddleware);
 
 app.use("/api/pendaftaran", pendaftaranRoute);
+
+
+
 
 app.get("/test", async (req, res) => {
   // return res.json({ success: true });
