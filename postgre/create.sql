@@ -113,8 +113,11 @@ CREATE TYPE STATUS_DAFTAR AS ENUM ('pendaftaran','pemanggilan','dokter', 'pemeri
 -- Ide kepepet : count (di hari itu) + 1 (kalo trigger ga jalan) 
 CREATE TABLE Pendaftaran (
     id_pendaftaran INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+
     status STATUS_DAFTAR NOT NULL,
-    antrian INT NOT NULL ,
+    antrian INT NULL ,
+    
+    -- terima tanggal daftar ,id_pasien
     tanggal_daftar DATE NOT NULL,
     id_pasien INT REFERENCES Pasien(id_pasien) NOT NULL
 ); 

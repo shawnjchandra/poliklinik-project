@@ -34,6 +34,8 @@ import jadwalPraktikRoute from "./routes/jadwalPraktik.js";
 import spesialisasiRoute from "./routes/spesialisasi.js";
 import pegawaiRoute from "./routes/pegawai.js";
 
+import pendaftaranRoute from "./routes/pendaftaran.js";
+
 // Cookie parse
 app.use(cookieParser());
 
@@ -51,6 +53,8 @@ app.use("/api/spesialisasi", spesialisasiRoute);
 app.use("/api/pegawai", pegawaiRoute);
 
 // app.get("/test", authMiddleware);
+
+app.use("/api/pendaftaran", pendaftaranRoute);
 
 app.get("/test", async (req, res) => {
   // return res.json({ success: true });
