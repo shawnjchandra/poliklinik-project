@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 export const registerPasien = async ({ nama, no_telp, email, jenis_kelamin, tanggal_lahir, id_kelurahan, password }) => {
+  
   const hashedPassword = await hashPassword(password);
 
   const result = await pasienRepo.insertPasien({ nama, no_telp, email, jenis_kelamin, tanggal_lahir, id_kelurahan, password: hashedPassword });
