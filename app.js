@@ -34,6 +34,7 @@ import jadwalPraktikRoute from "./routes/jadwalPraktik.js";
 import spesialisasiRoute from "./routes/spesialisasi.js";
 import pegawaiRoute from "./routes/pegawai.js";
 import ruangRoute from "./routes/ruang.js";
+import kecamatanRoute from "./routes/kecamatan.js";
 
 import pendaftaranRoute from "./routes/pendaftaran.js";
 
@@ -55,6 +56,7 @@ app.use("/api/spesialisasi", spesialisasiRoute);
 app.use("/api/pegawai", pegawaiRoute);
 
 app.use("/api/ruang", ruangRoute);
+app.use("/api/kecamatan", kecamatanRoute);
 
 
 // app.get("/test", authMiddleware);
