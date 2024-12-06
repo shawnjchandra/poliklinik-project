@@ -47,21 +47,17 @@ app.use(express.json());
 app.use(cors());
 
 // Routes
-<<<<<<< HEAD
-app.use("/api/pasien", pasienRoute, rekMedisRoute);
-=======
 
 app.use("/api/pasien", pasienRoute);
 app.use("/api/jadwal-praktik", jadwalPraktikRoute);
 app.use("/api/spesialisasi", spesialisasiRoute);
 app.use("/api/pegawai", pegawaiRoute);
->>>>>>> 8823cd2b90ea9f4e582d7de1219b92da1e662271
 
 // app.get("/test", authMiddleware);
 
 app.use("/api/pendaftaran", pendaftaranRoute);
 
-
+app.use("/api/rekam-medis", rekMedisRoute)
 
 
 app.get("/test", async (req, res) => {
