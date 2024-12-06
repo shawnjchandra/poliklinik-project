@@ -1,9 +1,9 @@
 import * as spesialisasiService from "../services/spesialisasi.js";
 
 export const createSpesialisasi = async (req, res) => {
-  const result = await spesialisasiService.createSpesialisasi(req.body);
+  await spesialisasiService.createSpesialisasi(req.body);
 
-  return res.json(result);
+  return res.json({ success: true });
 };
 
 export const getAllSpesialisasi = async (req, res) => {
