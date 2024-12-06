@@ -35,9 +35,11 @@ import spesialisasiRoute from "./routes/spesialisasi.js";
 import pegawaiRoute from "./routes/pegawai.js";
 import ruangRoute from "./routes/ruang.js";
 import kelurahanRoute from "./routes/kelurahan.js";
+import kecamatanRoute from "./routes/kecamatan.js";
 
 import pendaftaranRoute from "./routes/pendaftaran.js";
 
+import rekMedisRoute from "./routes/rekmedis.js";
 // Cookie parse
 app.use(cookieParser());
 
@@ -55,10 +57,15 @@ app.use("/api/spesialisasi", spesialisasiRoute);
 app.use("/api/pegawai", pegawaiRoute);
 app.use("/api/ruang", ruangRoute);
 app.use("/api/kelurahan", kelurahanRoute);
+app.use("/api/kecamatan", kecamatanRoute);
+
 
 // app.get("/test", authMiddleware);
 
 app.use("/api/pendaftaran", pendaftaranRoute);
+
+
+
 
 app.get("/test", async (req, res) => {
   // return res.json({ success: true });
