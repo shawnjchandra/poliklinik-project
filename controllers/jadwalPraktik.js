@@ -14,6 +14,7 @@ export const getJadwalPraktik = async (req, res) => {
   return res.json({ ...dokter, jadwal_praktik: jadwalPraktik });
 };
 
-export const updateJadwalPraktik = async (req, res) => {
-  return res.json("update");
+export const deleteJadwalPraktik = async (req, res) => {
+  const { id_jadwal } = req.params;
+  return res.json("delete" + id_jadwal);
 };
