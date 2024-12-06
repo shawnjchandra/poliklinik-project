@@ -5,7 +5,17 @@ import { UnauthorizedError } from "../errors/UnauthorizedError.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-export const registerDokter = async ({ nama, no_telp, email, password, id_kelurahan, NIP, role, biaya_kunjungan, id_spesialisasi }) => {
+export const registerDokter = async ({
+  nama,
+  no_telp,
+  email,
+  password,
+  id_kelurahan,
+  NIP,
+  role,
+  biaya_kunjungan,
+  id_spesialisasi,
+}) => {
   const hashedPassword = await hashPassword(password);
 
   const result = await pegawaiRepo.insertPegawai({
@@ -22,7 +32,15 @@ export const registerDokter = async ({ nama, no_telp, email, password, id_kelura
   return result;
 };
 
-export const registerPegawai = async ({ nama, no_telp, email, password, id_kelurahan, NIP, role }) => {
+export const registerPegawai = async ({
+  nama,
+  no_telp,
+  email,
+  password,
+  id_kelurahan,
+  NIP,
+  role,
+}) => {
   const hashedPassword = await hashPassword(password);
 
   const result = await pegawaiRepo.insertPegawai({
@@ -51,18 +69,29 @@ export const loginPegawai = async ({ email, password }) => {
     throw new UnauthorizedError("incorrect password");
   }
 
-  const token = jwt.sign({ id_pegawai: pegawai.id_pegawai, role: "pegawai" }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_LIFETIME,
-  });
+  const token = jwt.sign(
+    { id_pegawai: pegawai.id_pegawai, role: "pegawai" },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.JWT_LIFETIME,
+    }
+  );
 
   return token;
+};
+
+export const getAllDokter = async () => {
+  const queryResult = await pegawaiRepo.getAllDokter();
+
+  return queryResult.rows;
 };
 
 export const getDokterById = async (id_pegawai) => {
   const queryResult = await pegawaiRepo.getDokterById(id_pegawai);
 
+
   if (queryResult.rowCount === 0) {
-    throw new NotFoundError(`there's no dokter with id ${id_pegawai}`);
+    throw new NotFoundError("there's no dokter with id " + id_pegawai);
   }
 
   return queryResult.rows[0];

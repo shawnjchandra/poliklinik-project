@@ -1,9 +1,30 @@
 import pool from "../db/db.js";
 
-export const insertPegawai = async ({ nama, no_telp, email, password, id_kelurahan, NIP, role, biaya_kunjungan, id_spesialisasi }) => {
-  const insertPegawaiQuery = "INSERT INTO Pegawai (nama, no_telp, email, password, id_kelurahan, NIP, role, biaya_kunjungan, id_spesialisasi) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
+export const insertPegawai = async ({
+  nama,
+  no_telp,
+  email,
+  password,
+  id_kelurahan,
+  NIP,
+  role,
+  biaya_kunjungan,
+  id_spesialisasi,
+}) => {
+  const insertPegawaiQuery =
+    "INSERT INTO Pegawai (nama, no_telp, email, password, id_kelurahan, NIP, role, biaya_kunjungan, id_spesialisasi) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
 
-  const values = [nama, no_telp, email, password, id_kelurahan, NIP, role, biaya_kunjungan, id_spesialisasi];
+  const values = [
+    nama,
+    no_telp,
+    email,
+    password,
+    id_kelurahan,
+    NIP,
+    role,
+    biaya_kunjungan,
+    id_spesialisasi,
+  ];
 
   const queryResult = await pool.query(insertPegawaiQuery, values);
 
@@ -28,8 +49,17 @@ export const getPegawaiById = async (id_pegawai) => {
   return queryResult;
 };
 
+export const getAllDokter = async () => {
+  const queryText =
+    "SELECT * FROM Pegawai p INNER JOIN Spesialisasi s ON p.id_spesialisasi = s.id_spesialisasi WHERE p.role='dokter'";
+  const queryResult = await pool.query(queryText);
+
+  return queryResult;
+};
+
 export const getDokterById = async (id_pegawai) => {
-  const queryText = "SELECT * FROM Pegawai p INNER JOIN Spesialisasi s ON p.id_spesialisasi = s.id_spesialisasi WHERE p.id_pegawai=$1 AND p.role='dokter'";
+  const queryText =
+    "SELECT * FROM Pegawai p INNER JOIN Spesialisasi s ON p.id_spesialisasi = s.id_spesialisasi WHERE p.id_pegawai=$1 AND p.role='dokter'";
   const values = [id_pegawai];
   const queryResult = await pool.query(queryText, values);
 
