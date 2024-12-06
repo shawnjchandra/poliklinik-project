@@ -1,4 +1,5 @@
 import * as KecamatanRepo from "../repository/kecamatan.js";
+import { NotFoundError } from "../errors/NotFoundError.js";
 
 export const getAllKecamatan = async () => {
   const queryResult = await KecamatanRepo.getAllKecamatan();
