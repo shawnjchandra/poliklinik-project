@@ -6,7 +6,10 @@ export const createJadwalPraktik = async (req, res) => {
 };
 
 export const getJadwalPraktik = async (req, res) => {
-  return res.json("get jadwal praktik");
+  const { id_pegawai } = req.params;
+
+  const jadwalPraktik = await jadwalPraktikService.getJadwalPraktik(id_pegawai);
+  return res.json(jadwalPraktik);
 };
 
 export const updateJadwalPraktik = async (req, res) => {

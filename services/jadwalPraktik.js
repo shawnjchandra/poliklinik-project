@@ -7,3 +7,9 @@ export const createJadwalPraktik = async ({ hari, start_time, end_time, kuota, i
 
   return { hari, start_time, end_time, kuota, id_pegawai, id_ruang, id_jadwal: idJadwalPraktik };
 };
+
+export const getJadwalPraktik = async (id_pegawai) => {
+  const queryResult = await jadwalPraktikRepo.getJadwalPraktik(id_pegawai);
+
+  return queryResult.rows;
+};
