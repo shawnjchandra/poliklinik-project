@@ -37,6 +37,7 @@ import ruangRoute from "./routes/ruang.js";
 
 import pendaftaranRoute from "./routes/pendaftaran.js";
 
+import rekMedisRoute from "./routes/rekmedis.js";
 // Cookie parse
 app.use(cookieParser());
 
@@ -52,11 +53,16 @@ app.use("/api/pasien", pasienRoute);
 app.use("/api/jadwal-praktik", jadwalPraktikRoute);
 app.use("/api/spesialisasi", spesialisasiRoute);
 app.use("/api/pegawai", pegawaiRoute);
+
 app.use("/api/ruang", ruangRoute);
+
 
 // app.get("/test", authMiddleware);
 
 app.use("/api/pendaftaran", pendaftaranRoute);
+
+
+
 
 app.get("/test", async (req, res) => {
   // return res.json({ success: true });

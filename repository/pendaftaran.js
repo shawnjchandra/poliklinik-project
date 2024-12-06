@@ -40,3 +40,4 @@ export const updateAntrian = async ({antrian, id_pendaftaran}) =>{
 
     return queryResult;
 }
+

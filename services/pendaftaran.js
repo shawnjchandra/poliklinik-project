@@ -1,12 +1,24 @@
 import * as pendaftaranRepo from "../repository/pendaftaran.js";
+import { formatDate } from "../utils/dateFormatter.js";
 
-export const addPendaftaranOnline = async ({tanggal_daftar, id_pasien}) => {
-    const result = await pendaftaranRepo.addPendaftaran({status: 'pendaftaran',tanggal_daftar,id_pasien});
-
+// tanggal_daftar langsung dari program
+export const addPendaftaranOnline = async ({id_pasien}) => {
+    const tanggal_daftar = Date.now() + (1000*60*60*24);
+    
+    const formattedDate = formatDate(tanggal_daftar);
+    
+    const result = await pendaftaranRepo.addPendaftaran({status: 'pendaftaran', tanggal_daftar: formattedDate,id_pasien});
+    
     return result;
 };
-export const addPendaftaranOffline = async ({tanggal_daftar, id_pasien}) => {
-    const result = await pendaftaranRepo.addPendaftaran({status: 'pemanggilan',tanggal_daftar,id_pasien});
+
+// tanggal_daftar langsung dari program + 1 hari
+export const addPendaftaranOffline = async ({id_pasien}) => {
+    const tanggal_daftar = Date.now();
+
+    const formattedDate = formatDate(tanggal_daftar);
+    
+    const result = await pendaftaranRepo.addPendaftaran({status: 'pemanggilan', tanggal_daftar: formattedDate, id_pasien});
 
     return result;
 };
