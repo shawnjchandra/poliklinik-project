@@ -13,7 +13,7 @@ export const createRekamMedis = async ({ id_pendaftaran }) => {
 export const updateInformasiDasar = async ({ tinggi_badan, berat_badan, golongan_darah, diastolik, sistolik, denyut_nadi, id_rkm_med }) => {
   console.log("di repo : " + id_rkm_med);
 
-  const queryText = "UPDATE RekamMedis SET tinggi_badan = $1, berat_badan = $2, golongan_darah = $3, diastolik= $4, sistolik = $5, denyut_nadi = $6 WHERE id_rkm_med = $7";
+  const queryText = "UPDATE RekamMedis SET tinggi_badan = $1, berat_badan = $2, golongan_darah = $3, diastolik= $4, sistolik = $5, denyut_nadi = $6 WHERE id_rkm_med = $7 RETURNING *";
 
   const values = [tinggi_badan, berat_badan, golongan_darah, diastolik, sistolik, denyut_nadi, id_rkm_med];
 
