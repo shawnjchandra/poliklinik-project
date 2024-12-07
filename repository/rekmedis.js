@@ -1,9 +1,9 @@
 import pool from "../db/db.js";
 
-export const createRekamMedis = async ({ id_pasien, id_pendaftaran }) => {
-  const queryText = "INSERT INTO RekamMedis (id_pasien, id_pendaftaran) VALUES ($1, $2) RETURNING *";
+export const createRekamMedis = async ({ id_pendaftaran }) => {
+  const queryText = "INSERT INTO RekamMedis (id_pendaftaran) VALUES ($1) RETURNING *";
 
-  const values = [id_pasien, id_pendaftaran];
+  const values = [id_pendaftaran];
 
   const queryResult = await pool.query(queryText, values);
 

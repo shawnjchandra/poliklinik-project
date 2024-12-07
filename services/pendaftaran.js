@@ -1,6 +1,7 @@
 import pool from "../db/db.js";
 import { NotFoundError } from "../errors/NotFoundError.js";
 import * as pendaftaranRepo from "../repository/pendaftaran.js";
+import * as rekamMedisRepo from "../repository/rekmedis.js";
 import { formatDate } from "../utils/dateFormatter.js";
 
 // tanggal_daftar langsung dari program
@@ -21,7 +22,7 @@ export const addPendaftaranOffline = async ({ id_pasien, id_jadwal }) => {
 
   const formattedDate = formatDate(tanggal_daftar);
 
-  // const idJadwal = await  
+  // const idJadwal = await
 
   // Tambah id_jadwal
   const result = await pendaftaranRepo.addPendaftaran({ status: "pemanggilan", tanggal_daftar: formattedDate, id_pasien, id_jadwal });
@@ -58,7 +59,9 @@ export const daftarUlang = async ({ id_pendaftaran }) => {
 
     const nextAntrian = queryResultLastAntrian.rows[0].latest_antrian + 1;
 
-    const queryResultAntrian = await pendaftaranRepo.updateAntrian({ id_pendaftaran, antrian: nextAntrian }, client);
+    await pendaftaranRepo.updateAntrian({ id_pendaftaran, antrian: nextAntrian }, client);
+
+    await rekamMedisRepo.createRekamMedis({ id_pendaftaran });
 
     await client.query("SELECT pg_advisory_unlock($1)", [12345]);
     await client.query("COMMIT");
