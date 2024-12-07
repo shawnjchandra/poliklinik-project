@@ -64,7 +64,7 @@ app.use("/api/kecamatan", kecamatanRoute);
 
 app.use("/api/pendaftaran", pendaftaranRoute);
 
-
+app.use("/api/rekam-medis", rekMedisRoute)
 
 
 app.get("/test", async (req, res) => {
