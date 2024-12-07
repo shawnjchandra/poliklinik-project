@@ -72,7 +72,6 @@ CREATE TABLE RekamMedis(
     diastolik INT,
     sistolik INT,
     denyut_nadi INT,
-    id_pasien INT REFERENCES Pasien(id_pasien),
     id_pendaftaran INT REFERENCES Pendaftaran(id_pendaftaran)
 );
 
