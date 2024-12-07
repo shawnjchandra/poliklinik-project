@@ -22,7 +22,7 @@ export const addPendaftaran = async ({ status, tanggal_daftar, id_pasien, id_jad
     Method : ubah status dari sebuah pendaftaran 
 */
 export const updateStatus = async ({ status, id_pendaftaran, prevStatus }, client) => {
-  let queryText = "UPDATE Pendaftaran SET status = $1 WHERE id_pendaftaran = $2";
+  let queryText = "UPDATE Pendaftaran SET status = $1 WHERE id_pendaftaran = $2 AND tanggal_daftar = CURRENT_DATE";
 
   const values = [status, id_pendaftaran];
   // prevStatus nandain kondisi prev statusnya harus apa dulu, klo ga diisi, bisa apa aja
