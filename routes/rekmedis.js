@@ -7,6 +7,6 @@ router.post("/:id_pasien", createNewRekamMedis);
 
 router.post("/informasi-dasar/:id_rkm_med", updateInformasiDasar);
 
-router.post("/:id_pasien/updateDP", updateDiagnosaPasien);
+router.post("/diagnosis/:id_rkm_med", updateDiagnosaPasien);
 
 export default router;

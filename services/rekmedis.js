@@ -36,24 +36,28 @@ export const updateInformasiDasar = async ({ tinggi_badan, berat_badan, golongan
   return queryResult.rows[0];
 };
 
-export const updateDiagnosaPasien = async ({ resep_obat, prognosis, diag_penunjang, pemeriksaan_fisik, pemeriksaan_penunjang, riwayat_penyakit, keluhan, id_pasien }) => {
-  const available = await checkAvailabilityRKM(id_pasien);
+export const updateDiagnosaPasien = async ({ resep_obat, prognosis, diag_penunjang, pemeriksaan_fisik, pemeriksaan_penunjang, riwayat_penyakit, keluhan, id_rkm_med }) => {
+  //   const available = await checkAvailabilityRKM(id_rkm_med);
 
-  if (!available) {
-    throw new BadRequestError("There is no 'rekam medis' available for this user ");
+  //   if (!available) {
+  //     throw new BadRequestError("There is no 'rekam medis' available for this user ");
+  //   }
+
+  //   const queryResultRekamMedis = await rekMedRepo.getLatestRekamMedisByIdPasien(id_pasien);
+
+  //   const id = queryResultRekamMedis?.id_rkm_med || null;
+
+  //   if (id === null) {
+  //     throw new BadRequestError("There are no rows found");
+  //   }
+
+  const queryResult = await rekMedRepo.updateDiagnosaPasien({ resep_obat, prognosis, diag_penunjang, pemeriksaan_fisik, pemeriksaan_penunjang, riwayat_penyakit, keluhan, id_rkm_med });
+
+  if (queryResult.rowCount === 0) {
+    throw new NotFoundError(`id_rkm_med ${id_rkm_med} is not found`);
   }
 
-  const queryResultRekamMedis = await rekMedRepo.getLatestRekamMedisByIdPasien(id_pasien);
-
-  const id = queryResultRekamMedis?.id_rkm_med || null;
-
-  if (id === null) {
-    throw new BadRequestError("There are no rows found");
-  }
-
-  await rekMedRepo.updateDiagnosaPasien({ resep_obat, prognosis, diag_penunjang, pemeriksaan_fisik, pemeriksaan_penunjang, riwayat_penyakit, keluhan, id_rkm_med: id });
-
-  return { success: true };
+  return queryResult.rows[0];
 };
 
 export const getRekamMedis = async ({ id_rkm_med }) => {

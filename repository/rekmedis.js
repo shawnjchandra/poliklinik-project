@@ -23,7 +23,7 @@ export const updateInformasiDasar = async ({ tinggi_badan, berat_badan, golongan
 };
 
 export const updateDiagnosaPasien = async ({ resep_obat, prognosis, diag_penunjang, pemeriksaan_fisik, pemeriksaan_penunjang, riwayat_penyakit, keluhan, id_rkm_med }) => {
-  const queryText = "UPDATE RekamMedis SET resep_obat = $1, prognosis_tindakan_lanjut = $2, diag_penunjang =$3, pemeriksaan_fisik = $4, pemeriksaan_penunjang = $5, riwayat_penyakit = $6, keluhan = $7 WHERE id_rkm_med = $8 ";
+  const queryText = "UPDATE RekamMedis SET resep_obat = $1, prognosis_tindakan_lanjut = $2, diag_penunjang =$3, pemeriksaan_fisik = $4, pemeriksaan_penunjang = $5, riwayat_penyakit = $6, keluhan = $7 WHERE id_rkm_med = $8 RETURNING *";
 
   const values = [resep_obat, prognosis, diag_penunjang, pemeriksaan_fisik, pemeriksaan_penunjang, riwayat_penyakit, keluhan, id_rkm_med];
 
