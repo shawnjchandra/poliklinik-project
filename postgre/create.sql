@@ -72,7 +72,8 @@ CREATE TABLE RekamMedis(
     diastolik INT,
     sistolik INT,
     denyut_nadi INT,
-    id_pasien INT REFERENCES Pasien(id_pasien)
+    id_pasien INT REFERENCES Pasien(id_pasien),
+    id_pendaftaran INT REFERENCES Pendaftaran(id_pendaftaran)
 );
 
 
@@ -149,8 +150,4 @@ CREATE TABLE Transaksi(
     id_pendaftaran INT REFERENCES Pendaftaran(id_pendaftaran) NOT NULL 
 );
 
-CREATE TABLE PendaftaranToJadwal(
-    id_pendaftaran INT REFERENCES Pendaftaran(id_pendaftaran),
-    id_jadwal INT REFERENCES JadwalPraktikDokter(id_jadwal),
-    PRIMARY KEY(id_pendaftaran, id_jadwal)
-);
+
