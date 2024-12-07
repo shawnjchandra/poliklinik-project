@@ -8,10 +8,10 @@ import pool from "../db/db.js";
               * untuk offline dan online, sama" pas daftar ulang di petugas administrasi?
             id_pasien = id dari pasien 
 */
-export const addPendaftaran = async ({ status, tanggal_daftar, id_pasien }) => {
-  const queryText = "INSERT INTO Pendaftaran (status, tanggal_daftar, id_pasien) VALUES ($1, $2, $3)";
+export const addPendaftaran = async ({ status, tanggal_daftar, id_pasien, id_jadwal }) => {
+  const queryText = "INSERT INTO Pendaftaran (status, tanggal_daftar, id_pasien, id_jadwal) VALUES ($1, $2, $3, $4)";
 
-  const values = [status, tanggal_daftar, id_pasien];
+  const values = [status, tanggal_daftar, id_pasien, id_jadwal];
 
   const queryResult = await pool.query(queryText, values);
 
