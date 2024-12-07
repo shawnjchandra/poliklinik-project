@@ -93,7 +93,7 @@ CREATE TABLE Pegawai(
     nama VARCHAR(255) NOT NULL,
     no_telp CHAR(12) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL, 
     NIP CHAR(18) NOT NULL UNIQUE,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
@@ -119,7 +119,10 @@ CREATE TABLE Pendaftaran (
     
     -- terima tanggal daftar ,id_pasien
     tanggal_daftar DATE NOT NULL,
-    id_pasien INT REFERENCES Pasien(id_pasien) NOT NULL
+    id_pasien INT REFERENCES Pasien(id_pasien) NOT NULL,
+
+    -- tambah idJadwal (dia daftar ke jadwal mana (yang jam berapa dan hari apa))
+    id_jadwal INT REFERENCES JadwalPraktikDokter(id_jadwal) NOT NULL
 ); 
 
 CREATE TYPE HARI AS ENUM ('senin','selasa','rabu','kamis','jumat','sabtu','minggu');
