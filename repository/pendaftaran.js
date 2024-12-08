@@ -3,7 +3,7 @@ import pool from "../db/db.js";
 
 export const getPendaftaranOnline = async () => {
   const queryText =
-    "SELECT * FROM Pendaftaran p INNER JOIN JadwalPraktikDokter jpd ON p.id_jadwal = jpd.id_jadwal INNER JOIN Pasien pas ON p.id_pasien = pas.id_pasien INNER JOIN Pegawai peg ON jpd.id_pegawai = jpd.id_pegawai INNER JOIN Ruang r ON jpd.id_ruang = r.id_ruang WHERE p.status = 'pendaftaran' AND p.tanggal_daftar = CURRENT_DATE";
+    "SELECT pas.nama as nama_pasien, p.id_pendaftaran, pas.no_rkm_medis, peg.nama as nama_dokter, r.no_ruang, jpd.start_time, jpd.end_time FROM Pendaftaran p INNER JOIN JadwalPraktikDokter jpd ON p.id_jadwal = jpd.id_jadwal INNER JOIN Pasien pas ON p.id_pasien = pas.id_pasien INNER JOIN Pegawai peg ON jpd.id_pegawai = peg.id_pegawai INNER JOIN Ruang r ON jpd.id_ruang = r.id_ruang WHERE p.status = 'pendaftaran' AND p.tanggal_daftar = CURRENT_DATE";
 
   const queryResult = await pool.query(queryText);
 
