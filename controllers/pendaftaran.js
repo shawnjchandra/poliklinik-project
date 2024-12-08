@@ -8,6 +8,10 @@ export const addPendaftaranOnline = async (req, res) => {
   return res.json({ success: true });
 };
 
+export const getPendaftaranOnline = async (req, res) => {
+  return res.json("success");
+};
+
 export const addPendaftaranOffline = async (req, res) => {
   await pendaftaranService.addPendaftaranOffline(req.body);
 
