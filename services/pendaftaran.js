@@ -73,3 +73,9 @@ export const daftarUlang = async ({ id_pendaftaran }) => {
     client.release();
   }
 };
+
+export const getPendaftaranOnline = async () => {
+  const queryResult = await pendaftaranRepo.getPendaftaranOnline();
+
+  return queryResult.rows;
+};
