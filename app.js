@@ -49,6 +49,10 @@ app.use(express.json());
 //Setting up cors
 app.use(cors());
 
+// Morgan
+import morgan from "morgan";
+app.use(morgan("dev"));
+
 // Routes
 
 app.use("/api/pasien", pasienRoute);
@@ -59,13 +63,11 @@ app.use("/api/ruang", ruangRoute);
 app.use("/api/kelurahan", kelurahanRoute);
 app.use("/api/kecamatan", kecamatanRoute);
 
-
 // app.get("/test", authMiddleware);
 
 app.use("/api/pendaftaran", pendaftaranRoute);
 
-app.use("/api/rekam-medis", rekMedisRoute)
-
+app.use("/api/rekam-medis", rekMedisRoute);
 
 app.get("/test", async (req, res) => {
   // return res.json({ success: true });
