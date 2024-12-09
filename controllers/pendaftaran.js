@@ -13,6 +13,11 @@ export const getPendaftaranOnline = async (req, res) => {
   return res.json(pendaftaran);
 };
 
+export const getPendaftaranPemanggilan = async (req, res) => {
+  const pendaftaran = await pendaftaranService.getPendaftaranPemanggilan();
+  return res.json(pendaftaran);
+};
+
 export const addPendaftaranOffline = async (req, res) => {
   await pendaftaranService.addPendaftaranOffline(req.body);
 

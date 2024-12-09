@@ -79,3 +79,9 @@ export const getPendaftaranOnline = async () => {
 
   return queryResult.rows;
 };
+
+export const getPendaftaranPemanggilan = async () => {
+  const queryResult = await pendaftaranRepo.getPendaftaranPemanggilan();
+
+  return queryResult.rows;
+};
