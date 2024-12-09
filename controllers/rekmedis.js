@@ -31,5 +31,7 @@ export const updateDiagnosaPasien = async (req, res) => {
 export const getInformasiDasar = async (req, res) => {
   const { id_rkm_med } = req.params;
 
-  return res.json(`get informasi dasar : ${id_rkm_med}`);
+  const rkmMed = await rekamMedisService.getInformasiDasarRekamMedis({ id_rkm_med });
+
+  return res.json(rkmMed);
 };

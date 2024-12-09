@@ -54,8 +54,8 @@ export const getLatestRekamMedisByIdPasien = async (id_pasien) => {
   return queryResult.rows[0] || null;
 };
 
-export const getRekamMedisByIdRM = async (id_rkm_med) => {
-  const queryText = "SELECT * FROM RekamMedis WHERE id_rkm_med = $1";
+export const getInformasiDasarRekamMedis = async ({ id_rkm_med }) => {
+  const queryText = "SELECT resep_obat, prognosis_tindakan_lanjut, diag_penunjang, pemeriksaan_fisik, pemeriksaan_penunjang, riwayat_penyakit, keluhan, id_rkm_med FROM RekamMedis WHERE id_rkm_med = $1";
 
   const values = [id_rkm_med];
 
