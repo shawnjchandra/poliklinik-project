@@ -1,4 +1,4 @@
-import * as transaksiRepo from "../repository/transaksi";
+import * as transaksiRepo from "../repository/transaksi.js";
 
 export const getAllTransaksi = async () => {
     const tanggal_daftar = Date.now()
