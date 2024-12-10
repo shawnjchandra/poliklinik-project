@@ -40,6 +40,8 @@ import kecamatanRoute from "./routes/kecamatan.js";
 import pendaftaranRoute from "./routes/pendaftaran.js";
 
 import rekMedisRoute from "./routes/rekmedis.js";
+
+import transaksiRoute from "./routes/transaksi.js"; 
 // Cookie parse
 app.use(cookieParser());
 
@@ -68,6 +70,8 @@ app.use("/api/kecamatan", kecamatanRoute);
 app.use("/api/pendaftaran", pendaftaranRoute);
 
 app.use("/api/rekam-medis", rekMedisRoute);
+
+app.use("/api/transaksi", transaksiRoute);
 
 app.get("/test", async (req, res) => {
   // return res.json({ success: true });
