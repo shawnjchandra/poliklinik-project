@@ -41,7 +41,7 @@ import pendaftaranRoute from "./routes/pendaftaran.js";
 
 import rekMedisRoute from "./routes/rekmedis.js";
 
-import transaksiRoute from "./routes/transaksi.js"; 
+import transaksiRoute from "./routes/transaksi.js";
 // Cookie parse
 app.use(cookieParser());
 
