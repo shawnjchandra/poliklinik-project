@@ -3,9 +3,11 @@ import * as pendaftaranService from "../services/pendaftaran.js";
 
 // const addPendaftaran
 export const addPendaftaranOnline = async (req, res) => {
-  await pendaftaranService.addPendaftaranOnline(req.body);
+  const newPendaftaran = await pendaftaranService.addPendaftaranOnline(
+    req.body
+  );
 
-  return res.json({ success: true });
+  return res.json(newPendaftaran);
 };
 
 export const addPendaftaranOffline = async (req, res) => {

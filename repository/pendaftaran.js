@@ -8,21 +8,31 @@ import pool from "../db/db.js";
               * untuk offline dan online, sama" pas daftar ulang di petugas administrasi?
             id_pasien = id dari pasien 
 */
-export const addPendaftaran = async ({ status, tanggal_daftar, id_pasien, id_jadwal }) => {
-  const queryText = "INSERT INTO Pendaftaran (status, tanggal_daftar, id_pasien, id_jadwal) VALUES ($1, $2, $3, $4)";
+export const addPendaftaran = async ({
+  status,
+  tanggal_daftar,
+  id_pasien,
+  id_jadwal,
+}) => {
+  const queryText =
+    "INSERT INTO Pendaftaran (status, tanggal_daftar, id_pasien, id_jadwal) VALUES ($1, $2, $3, $4) RETURNING id_pendaftaran";
 
   const values = [status, tanggal_daftar, id_pasien, id_jadwal];
 
   const queryResult = await pool.query(queryText, values);
 
-  return queryResult;
+  return queryResult.rows[0];
 };
 
 /*
     Method : ubah status dari sebuah pendaftaran 
 */
-export const updateStatus = async ({ status, id_pendaftaran, prevStatus }, client) => {
-  let queryText = "UPDATE Pendaftaran SET status = $1 WHERE id_pendaftaran = $2";
+export const updateStatus = async (
+  { status, id_pendaftaran, prevStatus },
+  client
+) => {
+  let queryText =
+    "UPDATE Pendaftaran SET status = $1 WHERE id_pendaftaran = $2";
 
   const values = [status, id_pendaftaran];
   // prevStatus nandain kondisi prev statusnya harus apa dulu, klo ga diisi, bisa apa aja
