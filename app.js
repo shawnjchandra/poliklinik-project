@@ -34,10 +34,14 @@ import jadwalPraktikRoute from "./routes/jadwalPraktik.js";
 import spesialisasiRoute from "./routes/spesialisasi.js";
 import pegawaiRoute from "./routes/pegawai.js";
 import ruangRoute from "./routes/ruang.js";
+import kelurahanRoute from "./routes/kelurahan.js";
+import kecamatanRoute from "./routes/kecamatan.js";
 
 import pendaftaranRoute from "./routes/pendaftaran.js";
 
 import rekMedisRoute from "./routes/rekmedis.js";
+
+import transaksiRoute from "./routes/transaksi.js";
 // Cookie parse
 app.use(cookieParser());
 
@@ -47,22 +51,27 @@ app.use(express.json());
 //Setting up cors
 app.use(cors());
 
+// Morgan
+import morgan from "morgan";
+app.use(morgan("dev"));
+
 // Routes
 
 app.use("/api/pasien", pasienRoute);
 app.use("/api/jadwal-praktik", jadwalPraktikRoute);
 app.use("/api/spesialisasi", spesialisasiRoute);
 app.use("/api/pegawai", pegawaiRoute);
-
 app.use("/api/ruang", ruangRoute);
-
+app.use("/api/kelurahan", kelurahanRoute);
+app.use("/api/kecamatan", kecamatanRoute);
 
 // app.get("/test", authMiddleware);
 
 app.use("/api/pendaftaran", pendaftaranRoute);
 
-app.use("/api/rekam-medis", rekMedisRoute)
+app.use("/api/rekam-medis", rekMedisRoute);
 
+app.use("/api/transaksi", transaksiRoute);
 
 app.get("/test", async (req, res) => {
   // return res.json({ success: true });

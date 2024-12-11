@@ -2,7 +2,14 @@ import * as jadwalPraktikService from "../services/jadwalPraktik.js";
 import * as pegawaiService from "../services/pegawai.js";
 
 export const createJadwalPraktik = async (req, res) => {
-  const jadwalPraktik = await jadwalPraktikService.createJadwalPraktik(req.body);
+  const jadwalPraktik = await jadwalPraktikService.createJadwalPraktik(
+    req.body
+  );
+  return res.json(jadwalPraktik);
+};
+
+export const getAllJadwalPraktik = async (req, res) => {
+  const jadwalPraktik = await jadwalPraktikService.getAllJadwalPraktik();
   return res.json(jadwalPraktik);
 };
 
