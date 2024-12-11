@@ -8,13 +8,19 @@ export const getAllTransaksi = async (req,res) => {
 };
 
 export const checkTodayTransaksi = async (req,res) => {
-    await transaksiSerivce.checkTodayTransaksi(req.body);
+    await transaksiSerivce.checkTodayTransaksi(req.params);
     
     return res.json({ success : true });
 };
 
 export const updateActiveTransaksi = async (req,res) =>{
-    await transaksiSerivce.updateActiveTransaksi(req.body);
+    const {id_pendaftaran} = req.params;
+
+    const {metode} = req.body;
+
+    console.log(id_pendaftaran+" "+metode)
+
+    await transaksiSerivce.updateActiveTransaksi({id_pendaftaran, metode});
 
     return res.json({ success : true});
     
@@ -22,7 +28,7 @@ export const updateActiveTransaksi = async (req,res) =>{
 
 export const getTransaksi = async (req,res) => {
     
-    const result = await transaksiSerivce.getTransaksi(req.body);
+    const result = await transaksiSerivce.getTransaksi(req.params);
     
     return res.json({ success: true, result});
 };    
