@@ -85,3 +85,9 @@ export const getPendaftaranPemanggilan = async () => {
 
   return queryResult.rows;
 };
+
+export const getPendaftaranDokter = async () => {
+  const queryResult = await pendaftaranRepo.getPendaftaranDokter();
+
+  return queryResult.rows;
+};

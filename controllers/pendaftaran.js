@@ -42,3 +42,11 @@ export const daftarUlang = async (req, res) => {
 
   return res.json({ success: true });
 };
+
+export const getPendaftaranDokter = async (req, res) => {
+  const { id_pendaftaran } = req.params;
+
+  const pendaftaranDokter = await pendaftaranService.getPendaftaranDokter({ id_pendaftaran });
+
+  return res.json(pendaftaranDokter);
+};
