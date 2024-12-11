@@ -8,8 +8,9 @@ export const addPendaftaranOnline = async (req, res) => {
   return res.json({ success: true });
 };
 
-export const getPendaftaranOnline = async (req, res) => {
-  const pendaftaran = await pendaftaranService.getPendaftaranOnline();
+export const getPendaftaran = async (req, res) => {
+  const { status } = req.query;
+  const pendaftaran = await pendaftaranService.getPendaftaran({ status });
   return res.json(pendaftaran);
 };
 
@@ -25,7 +26,9 @@ export const addPendaftaranOffline = async (req, res) => {
 };
 
 export const updateStatus = async (req, res) => {
-  await pendaftaranService.updateStatus(req.body);
+  const { id_pendaftaran } = req.params;
+  const { status } = req.body;
+  await pendaftaranService.updateStatus({ status, id_pendaftaran });
 
   return res.json({ success: true });
 };
