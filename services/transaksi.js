@@ -1,27 +1,36 @@
 import * as transaksiRepo from "../repository/transaksi.js";
 
-export const getAllTransaksi = async () => {
-    const tanggal_daftar = Date.now()
+export const getAllPendaftaranTuntas = async () => {
 
-    const result = await transaksiRepo.getAllTransaksi();
+    const result = await transaksiRepo.getAllPendaftaranTuntas();
 
     return result;
 };
 
 export const checkTodayTransaksi = async ({id_pendaftaran}) => {
+
+    console.log("id pendaftaran"+id_pendaftaran);
+    
     const isExists = await transaksiRepo.checkTodayTransaksi({id_pendaftaran});
     
     let transaksi;
-    if(isExists){
+    if(isExists.rows[0] != null){
         transaksi = await transaksiRepo.getTransaksi({id_pendaftaran});
     }else {
         transaksi = await transaksiRepo.generateTransaksi({id_pendaftaran});
     }
-
+    console.log("isExists "+isExists);
+    
     return transaksi;
 };
 
-export const updateActiveTransaksi = async ({id_transaksi, metode}) =>{
+export const updateActiveTransaksi = async ({id_pendaftaran, metode}) =>{
+ 
+
+    console.log("id transaksi : " + id_pendaftaran );
+    const id_transaksi = await transaksiRepo.getTransaksi({id_pendaftaran});
+
+
     const result = await transaksiRepo.updateActiveTransaksi({id_transaksi,metode});
 
     return result;
