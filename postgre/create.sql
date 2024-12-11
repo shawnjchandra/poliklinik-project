@@ -57,6 +57,75 @@ CREATE TABLE Pasien(
     id_kelurahan INT REFERENCES Kelurahan(id_kelurahan) 
 );
 
+-- PEGAWAI
+
+-- role tambahan
+CREATE TYPE ROLE_P AS ENUM ('dokter', 'sis-admin','pet-admin','perawat');
+
+CREATE TABLE Pegawai(
+    id_pegawai INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    nama VARCHAR(255) NOT NULL,
+    no_telp CHAR(12) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL, 
+    NIP CHAR(18) NOT NULL UNIQUE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    id_kelurahan INT REFERENCES Kelurahan(id_kelurahan) NOT NULL,
+    role ROLE_P NOT NULL,
+    biaya_kunjungan INT,
+    id_spesialisasi INT REFERENCES Spesialisasi(id_spesialisasi) NULL
+);
+
+CREATE TYPE HARI AS ENUM ('senin','selasa','rabu','kamis','jumat','sabtu','minggu');
+
+-- TODO :
+-- Constraint check untuk dokter 
+CREATE TABLE JadwalPraktikDokter (
+    id_jadwal INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    hari HARI NOT NULL,
+    start_time TIME NOT NULL,
+    end_time TIME NOT NULL ,
+    kuota INT NOT NULL,
+    id_pegawai INT REFERENCES Pegawai(id_pegawai) NOT NULL,
+    id_ruang INT REFERENCES Ruang(id_ruang) NOT NULL,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE
+);
+
+--
+CREATE TYPE STATUS_DAFTAR AS ENUM ('pendaftaran','pemanggilan','dokter', 'pemeriksaan','tuntas');
+
+
+-- TODO :
+-- Antrian reset by day (daily)
+-- Ide kepepet : count (di hari itu) + 1 (kalo trigger ga jalan) 
+CREATE TABLE Pendaftaran (
+    id_pendaftaran INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+
+    status STATUS_DAFTAR NOT NULL,
+    antrian INT NULL ,
+    
+    -- terima tanggal daftar ,id_pasien
+    tanggal_daftar DATE NOT NULL,
+    id_pasien INT REFERENCES Pasien(id_pasien) NOT NULL,
+
+    -- tambah idJadwal (dia daftar ke jadwal mana (yang jam berapa dan hari apa))
+    id_jadwal INT REFERENCES JadwalPraktikDokter(id_jadwal) NOT NULL
+); 
+
+
+
+CREATE TYPE METODE AS ENUM ('ovo','gopay','bca', 'tunai');
+
+CREATE TABLE Transaksi(
+    id_transaksi INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    metode METODE NOT NULL,
+    biaya_total INT NOT NULL,
+    id_pendaftaran INT REFERENCES Pendaftaran(id_pendaftaran) NOT NULL 
+);
+
+
+
 CREATE TABLE RekamMedis(
     id_rkm_med INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     resep_obat VARCHAR(255),
@@ -82,71 +151,3 @@ CREATE TABLE DokumenRekamMedis (
     path_file VARCHAR(255),
     id_rkm_med INT REFERENCES RekamMedis(id_rkm_med)
 );
-
--- PEGAWAI
-
--- role tambahan
-CREATE TYPE ROLE_P AS ENUM ('dokter', 'sis-admin','pet-admin','perawat');
-
-CREATE TABLE Pegawai(
-    id_pegawai INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    nama VARCHAR(255) NOT NULL,
-    no_telp CHAR(12) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL, 
-    NIP CHAR(18) NOT NULL UNIQUE,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
-    is_active BOOLEAN NOT NULL DEFAULT TRUE,
-    id_kelurahan INT REFERENCES Kelurahan(id_kelurahan) NOT NULL,
-    role ROLE_P NOT NULL,
-    biaya_kunjungan INT,
-    id_spesialisasi INT REFERENCES Spesialisasi(id_spesialisasi) NULL
-);
-
-
---
-CREATE TYPE STATUS_DAFTAR AS ENUM ('pendaftaran','pemanggilan','dokter', 'pemeriksaan','tuntas');
-
-
--- TODO :
--- Antrian reset by day (daily)
--- Ide kepepet : count (di hari itu) + 1 (kalo trigger ga jalan) 
-CREATE TABLE Pendaftaran (
-    id_pendaftaran INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-
-    status STATUS_DAFTAR NOT NULL,
-    antrian INT NULL ,
-    
-    -- terima tanggal daftar ,id_pasien
-    tanggal_daftar DATE NOT NULL,
-    id_pasien INT REFERENCES Pasien(id_pasien) NOT NULL,
-
-    -- tambah idJadwal (dia daftar ke jadwal mana (yang jam berapa dan hari apa))
-    id_jadwal INT REFERENCES JadwalPraktikDokter(id_jadwal) NOT NULL
-); 
-
-CREATE TYPE HARI AS ENUM ('senin','selasa','rabu','kamis','jumat','sabtu','minggu');
-
--- TODO :
--- Constraint check untuk dokter 
-CREATE TABLE JadwalPraktikDokter (
-    id_jadwal INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    hari HARI NOT NULL,
-    start_time TIME NOT NULL,
-    end_time TIME NOT NULL ,
-    kuota INT NOT NULL,
-    id_pegawai INT REFERENCES Pegawai(id_pegawai) NOT NULL,
-    id_ruang INT REFERENCES Ruang(id_ruang) NOT NULL,
-    is_active BOOLEAN NOT NULL DEFAULT TRUE
-);
-
-CREATE TYPE METODE AS ENUM ('ovo','gopay','bca', 'tunai');
-
-CREATE TABLE Transaksi(
-    id_transaksi INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    metode METODE NOT NULL,
-    biaya_total INT NOT NULL,
-    id_pendaftaran INT REFERENCES Pendaftaran(id_pendaftaran) NOT NULL 
-);
-
-
