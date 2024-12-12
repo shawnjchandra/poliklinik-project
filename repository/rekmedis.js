@@ -22,10 +22,10 @@ export const updateInformasiDasar = async ({ tinggi_badan, berat_badan, golongan
   return queryResult;
 };
 
-export const updateDiagnosaPasien = async ({ resep_obat, prognosis, diag_penunjang, pemeriksaan_fisik, pemeriksaan_penunjang, riwayat_penyakit, keluhan, id_rkm_med }) => {
+export const updateDiagnosaPasien = async ({ resep_obat, prognosis_tindakan_lanjut, diag_penunjang, pemeriksaan_fisik, pemeriksaan_penunjang, riwayat_penyakit, keluhan, id_rkm_med }) => {
   const queryText = "UPDATE RekamMedis SET resep_obat = $1, prognosis_tindakan_lanjut = $2, diag_penunjang =$3, pemeriksaan_fisik = $4, pemeriksaan_penunjang = $5, riwayat_penyakit = $6, keluhan = $7 WHERE id_rkm_med = $8 RETURNING *";
 
-  const values = [resep_obat, prognosis, diag_penunjang, pemeriksaan_fisik, pemeriksaan_penunjang, riwayat_penyakit, keluhan, id_rkm_med];
+  const values = [resep_obat, prognosis_tindakan_lanjut, diag_penunjang, pemeriksaan_fisik, pemeriksaan_penunjang, riwayat_penyakit, keluhan, id_rkm_med];
 
   const queryResult = await pool.query(queryText, values);
 
@@ -68,7 +68,7 @@ export const getInformasiDasarRekamMedis = async ({ id_rkm_med }) => {
 
 export const getDiagnosisRekamMedis = async ({ id_rkm_med }) => {
   const queryText =
-    "SELECT rm.resep_obat, rm.id_rkm_med, rm.prognosis_tindakan_lanjut, rm.diag_penunjang, rm.pemeriksaan_fisik, rm.pemeriksaan_penunjang, rm.keluhan, FROM RekamMedis rm INNER JOIN Pendaftaran p ON rm.id_pendaftaran = p.id_pendaftaran INNER JOIN Pasien pas ON pas.id_pasien = p.id_pasien INNER JOIN JadwalPraktikDokter jpd ON jpd.id_jadwal = p.id_jadwal INNER JOIN Pegawai peg ON jpd.id_pegawai = peg.id_pegawai WHERE id_rkm_med = $1";
+    "SELECT rm.resep_obat, rm.id_rkm_med, rm.prognosis_tindakan_lanjut, rm.diag_penunjang, rm.pemeriksaan_fisik, rm.pemeriksaan_penunjang, rm.keluhan FROM RekamMedis rm INNER JOIN Pendaftaran p ON rm.id_pendaftaran = p.id_pendaftaran INNER JOIN Pasien pas ON pas.id_pasien = p.id_pasien INNER JOIN JadwalPraktikDokter jpd ON jpd.id_jadwal = p.id_jadwal INNER JOIN Pegawai peg ON jpd.id_pegawai = peg.id_pegawai WHERE id_rkm_med = $1";
 
   const values = [id_rkm_med];
 
