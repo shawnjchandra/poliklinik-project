@@ -3,9 +3,22 @@ import * as pendaftaranService from "../services/pendaftaran.js";
 
 // const addPendaftaran
 export const addPendaftaranOnline = async (req, res) => {
-  await pendaftaranService.addPendaftaranOnline(req.body);
+  const newPendaftaran = await pendaftaranService.addPendaftaranOnline(
+    req.body
+  );
 
-  return res.json({ success: true });
+  return res.json(newPendaftaran);
+};
+
+export const getPendaftaran = async (req, res) => {
+  const { status } = req.query;
+  const pendaftaran = await pendaftaranService.getPendaftaran({ status });
+  return res.json(pendaftaran);
+};
+
+export const getPendaftaranPemanggilan = async (req, res) => {
+  const pendaftaran = await pendaftaranService.getPendaftaranPemanggilan();
+  return res.json(pendaftaran);
 };
 
 export const addPendaftaranOffline = async (req, res) => {
@@ -15,7 +28,9 @@ export const addPendaftaranOffline = async (req, res) => {
 };
 
 export const updateStatus = async (req, res) => {
-  await pendaftaranService.updateStatus(req.body);
+  const { id_pendaftaran } = req.params;
+  const { status } = req.body;
+  await pendaftaranService.updateStatus({ status, id_pendaftaran });
 
   return res.json({ success: true });
 };
@@ -31,4 +46,12 @@ export const daftarUlang = async (req, res) => {
   await pendaftaranService.daftarUlang({ id_pendaftaran });
 
   return res.json({ success: true });
+};
+
+export const getPendaftaranDokter = async (req, res) => {
+  const { id_pendaftaran } = req.params;
+
+  const pendaftaranDokter = await pendaftaranService.getPendaftaranDokter({ id_pendaftaran });
+
+  return res.json(pendaftaranDokter);
 };

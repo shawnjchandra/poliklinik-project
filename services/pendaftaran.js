@@ -11,7 +11,12 @@ export const addPendaftaranOnline = async ({ id_pasien, id_jadwal }) => {
   const formattedDate = formatDate(tanggal_daftar);
 
   // Tambah id_jadwal
-  const result = await pendaftaranRepo.addPendaftaran({ status: "pendaftaran", tanggal_daftar: formattedDate, id_pasien, id_jadwal });
+  const result = await pendaftaranRepo.addPendaftaran({
+    status: "pendaftaran",
+    tanggal_daftar: formattedDate,
+    id_pasien,
+    id_jadwal,
+  });
 
   return result;
 };
@@ -25,15 +30,23 @@ export const addPendaftaranOffline = async ({ id_pasien, id_jadwal }) => {
   // const idJadwal = await
 
   // Tambah id_jadwal
-  const result = await pendaftaranRepo.addPendaftaran({ status: "pemanggilan", tanggal_daftar: formattedDate, id_pasien, id_jadwal });
+  const result = await pendaftaranRepo.addPendaftaran({
+    status: "pemanggilan",
+    tanggal_daftar: formattedDate,
+    id_pasien,
+    id_jadwal,
+  });
 
   return result;
 };
 
 export const updateStatus = async ({ status, id_pendaftaran }) => {
-  const result = await pendaftaranRepo.updateStatus({ status, id_pendaftaran });
+  const queryResult = await pendaftaranRepo.updateStatus({ status, id_pendaftaran });
 
-  return result;
+  if (queryResult.rowCount === 0) {
+    throw new NotFoundError(`pendaftaran with id_pendaftaran ${id_pendaftaran} is not found`);
+  }
+  return queryResult;
 };
 
 export const updateAntrian = async ({ id_pendaftaran }) => {
@@ -48,20 +61,29 @@ export const daftarUlang = async ({ id_pendaftaran }) => {
   try {
     await client.query("BEGIN");
 
-    const queryResultStatus = await pendaftaranRepo.updateStatus({ status: "pemanggilan", id_pendaftaran, prevStatus: "pendaftaran" }, client);
+    const queryResultStatus = await pendaftaranRepo.updateStatus(
+      { status: "pemanggilan", id_pendaftaran, prevStatus: "pendaftaran" },
+      client
+    );
 
     if (queryResultStatus.rowCount === 0) {
-      throw new NotFoundError(`id_pendaftaran ${id_pendaftaran} with status = 'pendaftaran' for today is not found`);
+      throw new NotFoundError(
+        `id_pendaftaran ${id_pendaftaran} with status = 'pendaftaran' for today is not found`
+      );
     }
 
     await client.query("SELECT pg_advisory_lock($1)", [12345]);
-    const queryResultLastAntrian = await pendaftaranRepo.getLatestAntrian(client);
+    const queryResultLastAntrian = await pendaftaranRepo.getLatestAntrian(
+      client
+    );
 
     const nextAntrian = queryResultLastAntrian.rows[0].latest_antrian + 1;
+
 
     await pendaftaranRepo.updateAntrian({ id_pendaftaran, antrian: nextAntrian }, client);
 
     await rekamMedisRepo.createRekamMedis({ id_pendaftaran });
+
 
     await client.query("SELECT pg_advisory_unlock($1)", [12345]);
     await client.query("COMMIT");
@@ -72,4 +94,10 @@ export const daftarUlang = async ({ id_pendaftaran }) => {
   } finally {
     client.release();
   }
+};
+
+export const getPendaftaran = async ({ status }) => {
+  const queryResult = await pendaftaranRepo.getPendaftaran({ status });
+
+  return queryResult.rows;
 };
