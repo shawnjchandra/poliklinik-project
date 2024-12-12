@@ -72,6 +72,18 @@ export const getInformasiDasarRekamMedis = async ({ id_rkm_med }) => {
   return queryResult.rows[0];
 };
 
+export const getDiagnosisRekamMedis = async ({ id_rkm_med }) => {
+  const queryResult = await rekMedRepo.getDiagnosisRekamMedis({ id_rkm_med });
+
+  console.log(queryResult.rowCount);
+
+  if (queryResult.rowCount === 0) {
+    throw new NotFoundError(`id_rkm_med ${id_rkm_med} is not found`);
+  }
+
+  return queryResult.rows[0];
+};
+
 const checkAvailabilityRKM = async (id_pasien) => {
   console.log("check availability : " + id_pasien);
 
