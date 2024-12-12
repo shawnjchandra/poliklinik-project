@@ -41,9 +41,12 @@ export const addPendaftaranOffline = async ({ id_pasien, id_jadwal }) => {
 };
 
 export const updateStatus = async ({ status, id_pendaftaran }) => {
-  const result = await pendaftaranRepo.updateStatus({ status, id_pendaftaran });
+  const queryResult = await pendaftaranRepo.updateStatus({ status, id_pendaftaran });
 
-  return result;
+  if (queryResult.rowCount === 0) {
+    throw new NotFoundError(`pendaftaran with id_pendaftaran ${id_pendaftaran} is not found`);
+  }
+  return queryResult;
 };
 
 export const updateAntrian = async ({ id_pendaftaran }) => {
@@ -91,4 +94,10 @@ export const daftarUlang = async ({ id_pendaftaran }) => {
   } finally {
     client.release();
   }
+};
+
+export const getPendaftaran = async ({ status }) => {
+  const queryResult = await pendaftaranRepo.getPendaftaran({ status });
+
+  return queryResult.rows;
 };

@@ -60,8 +60,16 @@ export const updateDiagnosaPasien = async ({ resep_obat, prognosis, diag_penunja
   return queryResult.rows[0];
 };
 
-export const getRekamMedis = async ({ id_rkm_med }) => {
-  const queryResult = await rekMedRepo.getRekamMedisByIdRM(id_rkm_med);
+export const getInformasiDasarRekamMedis = async ({ id_rkm_med }) => {
+  const queryResult = await rekMedRepo.getInformasiDasarRekamMedis({ id_rkm_med });
+
+  console.log(queryResult.rowCount);
+
+  if (queryResult.rowCount === 0) {
+    throw new NotFoundError(`id_rkm_med ${id_rkm_med} is not found`);
+  }
+
+  return queryResult.rows[0];
 };
 
 const checkAvailabilityRKM = async (id_pasien) => {

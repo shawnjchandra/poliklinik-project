@@ -1,6 +1,35 @@
 // STATUS_DAFTAR ('pendaftaran','pemanggilan','dokter', 'pemeriksaan','tuntas');
 import pool from "../db/db.js";
 
+export const getPendaftaranOnline = async () => {
+  const queryText =
+    "SELECT pas.nama as nama_pasien, p.id_pendaftaran, pas.no_rkm_medis, peg.nama as nama_dokter, r.no_ruang, jpd.start_time, jpd.end_time FROM Pendaftaran p INNER JOIN JadwalPraktikDokter jpd ON p.id_jadwal = jpd.id_jadwal INNER JOIN Pasien pas ON p.id_pasien = pas.id_pasien INNER JOIN Pegawai peg ON jpd.id_pegawai = peg.id_pegawai INNER JOIN Ruang r ON jpd.id_ruang = r.id_ruang WHERE p.status = 'pendaftaran' AND p.tanggal_daftar = CURRENT_DATE";
+
+  const queryResult = await pool.query(queryText);
+
+  return queryResult;
+};
+
+export const getPendaftaranPemanggilan = async () => {
+  const queryText =
+    "SELECT p.antrian, pas.nama as nama_pasien, p.id_pendaftaran, pas.no_rkm_medis, peg.nama as nama_dokter, r.no_ruang, jpd.start_time, jpd.end_time, rm.id_rkm_med FROM Pendaftaran p INNER JOIN JadwalPraktikDokter jpd ON p.id_jadwal = jpd.id_jadwal INNER JOIN Pasien pas ON p.id_pasien = pas.id_pasien INNER JOIN Pegawai peg ON jpd.id_pegawai = peg.id_pegawai INNER JOIN Ruang r ON jpd.id_ruang = r.id_ruang INNER JOIN RekamMedis rm ON rm.id_pendaftaran = p.id_pendaftaran WHERE p.status = 'pemanggilan' AND p.tanggal_daftar = CURRENT_DATE ORDER BY p.antrian ASC";
+
+  const queryResult = await pool.query(queryText);
+
+  return queryResult;
+};
+
+export const getPendaftaran = async ({ status }) => {
+  const queryText =
+    "SELECT p.antrian, pas.nama as nama_pasien, p.id_pendaftaran, pas.no_rkm_medis, peg.nama as nama_dokter, r.no_ruang, jpd.start_time, jpd.end_time, rm.id_rkm_med FROM Pendaftaran p INNER JOIN JadwalPraktikDokter jpd ON p.id_jadwal = jpd.id_jadwal INNER JOIN Pasien pas ON p.id_pasien = pas.id_pasien INNER JOIN Pegawai peg ON jpd.id_pegawai = peg.id_pegawai INNER JOIN Ruang r ON jpd.id_ruang = r.id_ruang LEFT JOIN RekamMedis rm ON rm.id_pendaftaran = p.id_pendaftaran WHERE p.status = $1 AND p.tanggal_daftar = CURRENT_DATE ORDER BY p.antrian ASC";
+
+  const values = [status];
+
+  const queryResult = await pool.query(queryText, values);
+
+  return queryResult;
+};
+
 /*
     Method : Untuk mendaftarkan pasien
     Param  : Status = 'pendaftaran' atau 'pemanggilan' berdasarkan daftar secara online atau offline (pet)
