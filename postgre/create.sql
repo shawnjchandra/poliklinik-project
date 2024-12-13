@@ -111,7 +111,7 @@ CREATE TABLE Pendaftaran (
 
     -- tambah idJadwal (dia daftar ke jadwal mana (yang jam berapa dan hari apa))
     id_jadwal INT REFERENCES JadwalPraktikDokter(id_jadwal) NOT NULL
-); 
+);
 
 
 

@@ -1,7 +1,9 @@
 import express, { Router } from "express";
-import { createNewRekamMedis, getDiagnosisRekamMedis, getInformasiDasar, updateDiagnosaPasien, updateInformasiDasar } from "../controllers/rekmedis.js";
+import { createNewRekamMedis, getDiagnosisRekamMedis, getInformasiDasar, updateDiagnosaPasien, updateInformasiDasar, getRekamMedisPasien } from "../controllers/rekmedis.js";
 
 const router = express.Router();
+
+router.get("/:id_pasien", getRekamMedisPasien);
 
 router.post("/:id_pasien", createNewRekamMedis);
 

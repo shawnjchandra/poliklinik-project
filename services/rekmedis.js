@@ -93,3 +93,9 @@ const checkAvailabilityRKM = async (id_pasien) => {
 
   return rekamMedisQueryResult.rowCount > 0 ? true : false;
 };
+
+export const getRekamMedisPasien = async ({ id_pasien }) => {
+  const queryResult = await rekMedRepo.getRekamMedisByIdPasien({ id_pasien });
+
+  return queryResult.rows;
+};
