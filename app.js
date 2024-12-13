@@ -53,7 +53,11 @@ app.use(cors());
 
 // Morgan
 import morgan from "morgan";
+import { authMiddleware } from "./middleware/authMiddleware.js";
 app.use(morgan("dev"));
+
+// file upload
+app.use("/uploads", authMiddleware(["perawat", "dokter", "sis-admin", "pet-admin"]), express.static("uploads"));
 
 // Routes
 
