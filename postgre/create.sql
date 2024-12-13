@@ -147,7 +147,7 @@ CREATE TABLE RekamMedis(
 
 CREATE TABLE DokumenRekamMedis (
     id_dkm INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    uploaded_at DATE NOT NULL,
+    uploaded_at DATE NOT NULL DEFAULT CURRENT_DATE,
     path_file VARCHAR(255),
     id_rkm_med INT REFERENCES RekamMedis(id_rkm_med)
 );
