@@ -4,6 +4,22 @@ import * as pendaftaranRepo from "../repository/pendaftaran.js";
 import * as rekamMedisRepo from "../repository/rekmedis.js";
 import { formatDate } from "../utils/dateFormatter.js";
 
+// seluruh data pendaftaran pasien
+export const getRiwayatPendaftaranPasien = async (id_pasien) => {
+  const result = await pendaftaranRepo.getRiwayatPendaftaranPasien(id_pasien);
+
+  return result.rows;
+};
+
+export const getPendaftaranPasienById = async (id_pasien, id_pendaftaran) => {
+  const result = await pendaftaranRepo.getPendaftaranPasienById(
+    id_pasien,
+    id_pendaftaran
+  );
+
+  return result.rows;
+};
+
 // tanggal_daftar langsung dari program
 export const addPendaftaranOnline = async ({ id_pasien, id_jadwal }) => {
   const tanggal_daftar = Date.now() + 1000 * 60 * 60 * 24;
@@ -41,10 +57,15 @@ export const addPendaftaranOffline = async ({ id_pasien, id_jadwal }) => {
 };
 
 export const updateStatus = async ({ status, id_pendaftaran }) => {
-  const queryResult = await pendaftaranRepo.updateStatus({ status, id_pendaftaran });
+  const queryResult = await pendaftaranRepo.updateStatus({
+    status,
+    id_pendaftaran,
+  });
 
   if (queryResult.rowCount === 0) {
-    throw new NotFoundError(`pendaftaran with id_pendaftaran ${id_pendaftaran} is not found`);
+    throw new NotFoundError(
+      `pendaftaran with id_pendaftaran ${id_pendaftaran} is not found`
+    );
   }
   return queryResult;
 };
@@ -79,11 +100,12 @@ export const daftarUlang = async ({ id_pendaftaran }) => {
 
     const nextAntrian = queryResultLastAntrian.rows[0].latest_antrian + 1;
 
-
-    await pendaftaranRepo.updateAntrian({ id_pendaftaran, antrian: nextAntrian }, client);
+    await pendaftaranRepo.updateAntrian(
+      { id_pendaftaran, antrian: nextAntrian },
+      client
+    );
 
     await rekamMedisRepo.createRekamMedis({ id_pendaftaran });
-
 
     await client.query("SELECT pg_advisory_unlock($1)", [12345]);
     await client.query("COMMIT");

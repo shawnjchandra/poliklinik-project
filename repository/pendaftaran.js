@@ -1,6 +1,28 @@
 // STATUS_DAFTAR ('pendaftaran','pemanggilan','dokter', 'pemeriksaan','tuntas');
 import pool from "../db/db.js";
 
+export const getRiwayatPendaftaranPasien = async (id_pasien) => {
+  const queryText =
+    "SELECT p.id_pendaftaran, p.status, p.antrian, p.tanggal_daftar, p.id_pasien, p.id_jadwal, jpd.hari, jpd.start_time, jpd.end_time, jpd.kuota, r.no_ruang, t.id_transaksi, t.metode, peg.nama as nama_dokter, s.nama_spesialisasi, t.biaya_total FROM Pendaftaran p INNER JOIN JadwalPraktikDokter jpd ON p.id_jadwal = jpd.id_jadwal INNER JOIN Ruang r ON jpd.id_ruang = r.id_ruang INNER JOIN Pegawai peg ON jpd.id_pegawai = peg.id_pegawai INNER JOIN Spesialisasi s ON peg.id_spesialisasi = s.id_spesialisasi LEFT JOIN Transaksi t ON p.id_pendaftaran = t.id_pendaftaran WHERE p.id_pasien = $1 ORDER BY p.tanggal_daftar DESC";
+
+  const values = [id_pasien];
+
+  const queryResult = await pool.query(queryText, values);
+
+  return queryResult;
+};
+
+export const getPendaftaranPasienById = async (id_pasien, id_pendaftaran) => {
+  const queryText =
+    "SELECT p.id_pendaftaran, p.status, p.antrian, p.tanggal_daftar, p.id_pasien, p.id_jadwal, jpd.hari, jpd.start_time, jpd.end_time, jpd.kuota, r.no_ruang, t.id_transaksi, t.metode, peg.nama as nama_dokter, s.nama_spesialisasi, t.biaya_total FROM Pendaftaran p INNER JOIN JadwalPraktikDokter jpd ON p.id_jadwal = jpd.id_jadwal INNER JOIN Ruang r ON jpd.id_ruang = r.id_ruang INNER JOIN Pegawai peg ON jpd.id_pegawai = peg.id_pegawai INNER JOIN Spesialisasi s ON peg.id_spesialisasi = s.id_spesialisasi LEFT JOIN Transaksi t ON p.id_pendaftaran = t.id_pendaftaran WHERE p.id_pasien = $1 AND p.id_pendaftaran = $2 ORDER BY p.tanggal_daftar DESC";
+
+  const values = [id_pasien, id_pendaftaran];
+
+  const queryResult = await pool.query(queryText, values);
+
+  return queryResult;
+};
+
 export const getPendaftaranOnline = async () => {
   const queryText =
     "SELECT p.id_pasien, pas.nama as nama_pasien, p.id_pendaftaran, pas.no_rkm_medis, peg.nama as nama_dokter, r.no_ruang, jpd.start_time, jpd.end_time FROM Pendaftaran p INNER JOIN JadwalPraktikDokter jpd ON p.id_jadwal = jpd.id_jadwal INNER JOIN Pasien pas ON p.id_pasien = pas.id_pasien INNER JOIN Pegawai peg ON jpd.id_pegawai = peg.id_pegawai INNER JOIN Ruang r ON jpd.id_ruang = r.id_ruang WHERE p.status = 'pendaftaran' AND p.tanggal_daftar = CURRENT_DATE";

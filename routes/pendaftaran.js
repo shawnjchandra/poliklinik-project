@@ -1,5 +1,12 @@
 import express from "express";
-import { addPendaftaranOnline, addPendaftaranOffline, daftarUlang, getPendaftaran, updateStatus } from "../controllers/pendaftaran.js";
+import {
+  addPendaftaranOnline,
+  addPendaftaranOffline,
+  daftarUlang,
+  getPendaftaran,
+  updateStatus,
+  getRiwayatPendaftaranPasien,
+} from "../controllers/pendaftaran.js";
 const router = express.Router();
 
 router.post("/online", addPendaftaranOnline);
@@ -7,6 +14,8 @@ router.post("/online", addPendaftaranOnline);
 router.post("/offline", addPendaftaranOffline);
 
 router.get("/", getPendaftaran);
+
+router.get("/:id_pasien", getRiwayatPendaftaranPasien);
 // router.get("/pemanggilan", getPendaftaranPemanggilan);
 
 router.post("/daftar-ulang/:id_pendaftaran", daftarUlang);
