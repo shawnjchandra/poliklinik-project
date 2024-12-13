@@ -1,5 +1,11 @@
-export const getDokumenRekamMedis = async ({ id_rkm_med }) => {};
+import * as dokumenRekamMedisRepo from "../repository/dokumenRekamMedis.js";
 
-export const addDokumenRekamMedis = async ({ id_rkm_med, dokumen_rekam_medis }) => {};
+export const getDokumenRekamMedis = async ({ id_rkm_med }) => {
+  const queryResult = await dokumenRekamMedisRepo.getDokumenRekamMedis({ id_rkm_med });
 
-export const deleteDokumenRekamMedis = async ({ id_dkm }) => {};
+  return queryResult.rows;
+};
+
+export const deleteDokumenRekamMedis = async ({ id_dkm }) => {
+  await dokumenRekamMedisRepo.deleteDokumenRekamMedis({ id_dkm });
+};
