@@ -1,18 +1,24 @@
 import express, { Router } from "express";
 import { createNewRekamMedis, getDiagnosisRekamMedis, getInformasiDasar, updateDiagnosaPasien, updateInformasiDasar, getRekamMedisPasien } from "../controllers/rekmedis.js";
+import { authMiddleware } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.get("/:id_pasien", getRekamMedisPasien);
+// dapetin semua riwayat rekam medis pasien
+router.get("/:id_pasien", authMiddleware(["dokter"]), getRekamMedisPasien);
 
-router.post("/:id_pasien", createNewRekamMedis);
+// router.post("/:id_pasien", createNewRekamMedis);
 
-router.get("/informasi-dasar/:id_rkm_med", getInformasiDasar);
+// update single informasi dasar
+router.get("/informasi-dasar/:id_rkm_med", authMiddleware(["perawat"]), getInformasiDasar);
 
-router.post("/informasi-dasar/:id_rkm_med", updateInformasiDasar);
+// update informasi dasar
+router.post("/informasi-dasar/:id_rkm_med", authMiddleware(["perawat"]), updateInformasiDasar);
 
-router.post("/diagnosis/:id_rkm_med", updateDiagnosaPasien);
+// get single diagnosis + informasi dasar
+router.post("/diagnosis/:id_rkm_med", authMiddleware(["dokter"]), updateDiagnosaPasien);
 
-router.get("/diagnosis/:id_rkm_med", getDiagnosisRekamMedis);
+// updae single diagnosis + informasi dasar
+router.get("/diagnosis/:id_rkm_med", authMiddleware(["dokter"]), getDiagnosisRekamMedis);
 
 export default router;
