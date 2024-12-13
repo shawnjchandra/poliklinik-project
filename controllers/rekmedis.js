@@ -21,9 +21,9 @@ export const updateInformasiDasar = async (req, res) => {
 
 export const updateDiagnosaPasien = async (req, res) => {
   const { id_rkm_med } = req.params;
-  const { resep_obat, prognosis, diag_penunjang, pemeriksaan_fisik, pemeriksaan_penunjang, riwayat_penyakit, keluhan } = req.body;
+  const { resep_obat, prognosis_tindakan_lanjut, diag_penunjang, pemeriksaan_fisik, pemeriksaan_penunjang, riwayat_penyakit, keluhan } = req.body;
 
-  const result = await rekamMedisService.updateDiagnosaPasien({ resep_obat, prognosis, diag_penunjang, pemeriksaan_fisik, pemeriksaan_penunjang, riwayat_penyakit, keluhan, id_rkm_med });
+  const result = await rekamMedisService.updateDiagnosaPasien({ resep_obat, prognosis_tindakan_lanjut, diag_penunjang, pemeriksaan_fisik, pemeriksaan_penunjang, riwayat_penyakit, keluhan, id_rkm_med });
 
   return res.json(result);
 };
@@ -34,4 +34,11 @@ export const getInformasiDasar = async (req, res) => {
   const rkmMed = await rekamMedisService.getInformasiDasarRekamMedis({ id_rkm_med });
 
   return res.json(rkmMed);
+};
+
+export const getDiagnosisRekamMedis = async (req, res) => {
+  const { id_rkm_med } = req.params;
+  const diagnosis = await rekamMedisService.getDiagnosisRekamMedis({ id_rkm_med });
+
+  return res.json(diagnosis);
 };

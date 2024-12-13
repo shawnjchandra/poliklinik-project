@@ -36,7 +36,7 @@ export const updateInformasiDasar = async ({ tinggi_badan, berat_badan, golongan
   return queryResult.rows[0];
 };
 
-export const updateDiagnosaPasien = async ({ resep_obat, prognosis, diag_penunjang, pemeriksaan_fisik, pemeriksaan_penunjang, riwayat_penyakit, keluhan, id_rkm_med }) => {
+export const updateDiagnosaPasien = async ({ resep_obat, prognosis_tindakan_lanjut, diag_penunjang, pemeriksaan_fisik, pemeriksaan_penunjang, riwayat_penyakit, keluhan, id_rkm_med }) => {
   //   const available = await checkAvailabilityRKM(id_rkm_med);
 
   //   if (!available) {
@@ -51,7 +51,7 @@ export const updateDiagnosaPasien = async ({ resep_obat, prognosis, diag_penunja
   //     throw new BadRequestError("There are no rows found");
   //   }
 
-  const queryResult = await rekMedRepo.updateDiagnosaPasien({ resep_obat, prognosis, diag_penunjang, pemeriksaan_fisik, pemeriksaan_penunjang, riwayat_penyakit, keluhan, id_rkm_med });
+  const queryResult = await rekMedRepo.updateDiagnosaPasien({ resep_obat, prognosis_tindakan_lanjut, diag_penunjang, pemeriksaan_fisik, pemeriksaan_penunjang, riwayat_penyakit, keluhan, id_rkm_med });
 
   if (queryResult.rowCount === 0) {
     throw new NotFoundError(`id_rkm_med ${id_rkm_med} is not found`);
@@ -62,6 +62,18 @@ export const updateDiagnosaPasien = async ({ resep_obat, prognosis, diag_penunja
 
 export const getInformasiDasarRekamMedis = async ({ id_rkm_med }) => {
   const queryResult = await rekMedRepo.getInformasiDasarRekamMedis({ id_rkm_med });
+
+  console.log(queryResult.rowCount);
+
+  if (queryResult.rowCount === 0) {
+    throw new NotFoundError(`id_rkm_med ${id_rkm_med} is not found`);
+  }
+
+  return queryResult.rows[0];
+};
+
+export const getDiagnosisRekamMedis = async ({ id_rkm_med }) => {
+  const queryResult = await rekMedRepo.getDiagnosisRekamMedis({ id_rkm_med });
 
   console.log(queryResult.rowCount);
 
