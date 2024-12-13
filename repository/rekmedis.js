@@ -84,7 +84,7 @@ export const getLatestRekamMedisByIdPasien = async (id_pasien) => {
 export const getInformasiDasarRekamMedis = async ({ id_rkm_med }) => {
   // dont use * change later !!!
   const queryText =
-    "SELECT rm.tinggi_badan, rm.id_rkm_med, rm.berat_badan, rm.diastolik, rm.sistolik, rm.golongan_darah, rm.denyut_nadi FROM RekamMedis rm INNER JOIN Pendaftaran p ON rm.id_pendaftaran = p.id_pendaftaran INNER JOIN Pasien pas ON pas.id_pasien = p.id_pasien INNER JOIN JadwalPraktikDokter jpd ON jpd.id_jadwal = p.id_jadwal INNER JOIN Pegawai peg ON jpd.id_pegawai = peg.id_pegawai WHERE id_rkm_med = $1";
+    "SELECT p.id_pasien, rm.tinggi_badan, rm.id_rkm_med, rm.berat_badan, rm.diastolik, rm.sistolik, rm.golongan_darah, rm.denyut_nadi FROM RekamMedis rm INNER JOIN Pendaftaran p ON rm.id_pendaftaran = p.id_pendaftaran INNER JOIN Pasien pas ON pas.id_pasien = p.id_pasien INNER JOIN JadwalPraktikDokter jpd ON jpd.id_jadwal = p.id_jadwal INNER JOIN Pegawai peg ON jpd.id_pegawai = peg.id_pegawai WHERE id_rkm_med = $1";
 
   const values = [id_rkm_med];
 
@@ -95,7 +95,7 @@ export const getInformasiDasarRekamMedis = async ({ id_rkm_med }) => {
 
 export const getDiagnosisRekamMedis = async ({ id_rkm_med }) => {
   const queryText =
-    "SELECT rm.resep_obat, rm.id_rkm_med, rm.prognosis_tindakan_lanjut, rm.diag_penunjang, rm.pemeriksaan_fisik, rm.pemeriksaan_penunjang, rm.keluhan FROM RekamMedis rm INNER JOIN Pendaftaran p ON rm.id_pendaftaran = p.id_pendaftaran INNER JOIN Pasien pas ON pas.id_pasien = p.id_pasien INNER JOIN JadwalPraktikDokter jpd ON jpd.id_jadwal = p.id_jadwal INNER JOIN Pegawai peg ON jpd.id_pegawai = peg.id_pegawai WHERE id_rkm_med = $1";
+    "SELECT p.id_pasien, rm.resep_obat, rm.id_rkm_med, rm.prognosis_tindakan_lanjut, rm.diag_penunjang, rm.pemeriksaan_fisik, rm.pemeriksaan_penunjang, rm.keluhan FROM RekamMedis rm INNER JOIN Pendaftaran p ON rm.id_pendaftaran = p.id_pendaftaran INNER JOIN Pasien pas ON pas.id_pasien = p.id_pasien INNER JOIN JadwalPraktikDokter jpd ON jpd.id_jadwal = p.id_jadwal INNER JOIN Pegawai peg ON jpd.id_pegawai = peg.id_pegawai WHERE id_rkm_med = $1";
 
   const values = [id_rkm_med];
 
