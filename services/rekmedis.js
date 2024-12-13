@@ -22,7 +22,7 @@ export const updateInformasiDasar = async ({ tinggi_badan, berat_badan, golongan
     await client.query("BEGIN");
 
     if (dokumen_rekam_medis.length !== 0) {
-      await dokumenRekamMedisRepo.insertDokumenRekamMedis({ id_rkm_med, dokumen_rekam_medis });
+      await dokumenRekamMedisRepo.insertDokumenRekamMedis({ id_rkm_med, dokumen_rekam_medis }, client);
     }
 
     const queryResult = await rekMedRepo.updateInformasiDasar({ tinggi_badan, berat_badan, golongan_darah, diastolik, sistolik, denyut_nadi, id_rkm_med }, client);
@@ -30,9 +30,9 @@ export const updateInformasiDasar = async ({ tinggi_badan, berat_badan, golongan
     if (queryResult.rowCount === 0) {
       throw new NotFoundError(`id_rkm_med ${id_rkm_med} is not found`);
     }
-    return queryResult.rows[0];
 
     await client.query("COMMIT");
+    return queryResult.rows[0];
   } catch (error) {
     await client.query("ROLLBACK");
 
