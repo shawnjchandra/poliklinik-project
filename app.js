@@ -57,7 +57,17 @@ import { authMiddleware } from "./middleware/authMiddleware.js";
 app.use(morgan("dev"));
 
 // file upload
-app.use("/uploads", authMiddleware(["perawat", "dokter", "sis-admin", "pet-admin"]), express.static("uploads"));
+// TODO : Extract to route later
+app.get("/uploads/:filename", authMiddleware(["perawat", "dokter"]), (req, res) => {
+  const filename = req.params.filename;
+  const filePath = `./uploads/${filename}`;
+
+  res.download(filePath, (err) => {
+    if (err) {
+      res.status(404).send("File not found");
+    }
+  });
+});
 
 // Routes
 
