@@ -14,7 +14,7 @@ router.get("/:id_pasien", authMiddleware(["dokter"]), getRekamMedisPasien);
 router.get("/informasi-dasar/:id_rkm_med", authMiddleware(["perawat"]), getInformasiDasar);
 
 // update informasi dasar
-router.post("/informasi-dasar/:id_rkm_med", authMiddleware(["perawat"]), fileUpload("./public").array("dokumen_rekam_medis"), updateInformasiDasar);
+router.post("/informasi-dasar/:id_rkm_med", authMiddleware(["perawat"]), fileUpload("./uploads").array("dokumen_rekam_medis"), updateInformasiDasar);
 
 // get single diagnosis + informasi dasar
 router.post("/diagnosis/:id_rkm_med", authMiddleware(["dokter"]), updateDiagnosaPasien);

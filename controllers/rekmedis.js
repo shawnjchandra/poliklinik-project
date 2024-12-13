@@ -14,7 +14,7 @@ export const updateInformasiDasar = async (req, res) => {
   const { id_rkm_med } = req.params;
   const { tinggi_badan, berat_badan, golongan_darah, diastolik, sistolik, denyut_nadi } = req.body;
 
-  const result = await rekamMedisService.updateInformasiDasar({ tinggi_badan, berat_badan, golongan_darah, diastolik, sistolik, denyut_nadi, id_rkm_med });
+  const result = await rekamMedisService.updateInformasiDasar({ tinggi_badan, berat_badan, golongan_darah, diastolik, sistolik, denyut_nadi, id_rkm_med, dokumen_rekam_medis: req.files });
 
   return res.json({ success: true, ...result });
 };
