@@ -1,6 +1,15 @@
 // import service
 import * as pendaftaranService from "../services/pendaftaran.js";
 
+export const getRiwayatPendaftaranPasien = async (req, res) => {
+  const id_pasien = req.params.id_pasien;
+
+  const riwayatPendaftaranPasien =
+    await pendaftaranService.getRiwayatPendaftaranPasien(id_pasien);
+
+  return res.json(riwayatPendaftaranPasien);
+};
+
 // const addPendaftaran
 export const addPendaftaranOnline = async (req, res) => {
   const newPendaftaran = await pendaftaranService.addPendaftaranOnline(
@@ -51,7 +60,9 @@ export const daftarUlang = async (req, res) => {
 export const getPendaftaranDokter = async (req, res) => {
   const { id_pendaftaran } = req.params;
 
-  const pendaftaranDokter = await pendaftaranService.getPendaftaranDokter({ id_pendaftaran });
+  const pendaftaranDokter = await pendaftaranService.getPendaftaranDokter({
+    id_pendaftaran,
+  });
 
   return res.json(pendaftaranDokter);
 };
