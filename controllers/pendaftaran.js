@@ -3,11 +3,22 @@ import * as pendaftaranService from "../services/pendaftaran.js";
 
 export const getRiwayatPendaftaranPasien = async (req, res) => {
   const id_pasien = req.params.id_pasien;
+  const id_pendaftaran = req.query.id_pendaftaran;
 
-  const riwayatPendaftaranPasien =
-    await pendaftaranService.getRiwayatPendaftaranPasien(id_pasien);
+  if (id_pendaftaran) {
+    const riwayatPendaftaranPasien =
+      await pendaftaranService.getPendaftaranPasienById(
+        id_pasien,
+        id_pendaftaran
+      );
 
-  return res.json(riwayatPendaftaranPasien);
+    return res.json(riwayatPendaftaranPasien);
+  } else {
+    const riwayatPendaftaranPasien =
+      await pendaftaranService.getRiwayatPendaftaranPasien(id_pasien);
+
+    return res.json(riwayatPendaftaranPasien);
+  }
 };
 
 // const addPendaftaran

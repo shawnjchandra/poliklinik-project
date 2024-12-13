@@ -11,6 +11,15 @@ export const getRiwayatPendaftaranPasien = async (id_pasien) => {
   return result.rows;
 };
 
+export const getPendaftaranPasienById = async (id_pasien, id_pendaftaran) => {
+  const result = await pendaftaranRepo.getPendaftaranPasienById(
+    id_pasien,
+    id_pendaftaran
+  );
+
+  return result.rows;
+};
+
 // tanggal_daftar langsung dari program
 export const addPendaftaranOnline = async ({ id_pasien, id_jadwal }) => {
   const tanggal_daftar = Date.now() + 1000 * 60 * 60 * 24;
