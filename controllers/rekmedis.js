@@ -35,7 +35,7 @@ export const getInformasiDasar = async (req, res) => {
   const rkmMed = await rekamMedisService.getInformasiDasarRekamMedis({ id_rkm_med });
   const dokumenRekamMed = await dokumenRekamMedisService.getDokumenRekamMedis({ id_rkm_med });
 
-  return res.json({ rekam_medis: rkmMed, dokumen_rekam_medis: dokumenRekamMed });
+  return res.json({ informasi_dasar: rkmMed, dokumen_rekam_medis: dokumenRekamMed });
 };
 
 export const getDiagnosisRekamMedis = async (req, res) => {
