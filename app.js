@@ -83,22 +83,6 @@ app.use("/api/rekam-medis", rekMedisRoute);
 
 app.use("/api/transaksi", transaksiRoute);
 
-app.get("/test", async (req, res) => {
-  // return res.json({ success: true });
-
-  const a = await axios.get("http://192.168.77.50:8080/api/test");
-  return res.json(a.data);
-  try {
-    const a = await pool.query("SELECT 5+5;");
-    console.log(a);
-    return res.json(a.rows);
-  } catch (err) {
-    throw new InternalServerError("error");
-  }
-});
-
-import fs from "fs";
-
 // file upload
 // TODO : Extract to route later
 app.get("/uploads/:filename", authMiddleware(["perawat", "dokter"]), (req, res) => {
