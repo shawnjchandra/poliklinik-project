@@ -32,8 +32,35 @@ export const updateDiagnosaPasien = async ({ resep_obat, prognosis_tindakan_lanj
   return queryResult;
 };
 
-export const getRekamMedisByIdPasien = async (id_pasien) => {
-  const queryText = "SELECT * FROM RekamMedis WHERE id_pasien = $1";
+export const getRekamMedisByIdPasien = async ({ id_pasien }) => {
+  const queryText = `SELECT 
+    P.id_pendaftaran,
+    P.status,
+    P.antrian,
+    P.tanggal_daftar,
+    P.id_pasien,
+    P.id_jadwal,
+    RM.id_rkm_med,
+    RM.resep_obat,
+    RM.prognosis_tindakan_lanjut,
+    RM.diag_penunjang,
+    RM.pemeriksaan_fisik,
+    RM.pemeriksaan_penunjang,
+    RM.riwayat_penyakit,
+    RM.keluhan,
+    RM.tinggi_badan,
+    RM.berat_badan,
+    RM.golongan_darah,
+    RM.diastolik,
+    RM.sistolik,
+    RM.denyut_nadi
+FROM 
+    Pendaftaran P
+JOIN 
+    RekamMedis RM ON P.id_pendaftaran = RM.id_pendaftaran
+WHERE 
+    P.status = 'tuntas' AND p.id_pasien = $1;
+`;
 
   const values = [id_pasien];
 
