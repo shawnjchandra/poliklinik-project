@@ -5,10 +5,26 @@ import { UnauthorizedError } from "../errors/UnauthorizedError.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-export const registerPasien = async ({ nama, no_telp, email, jenis_kelamin, tanggal_lahir, id_kelurahan, password }) => {
+export const registerPasien = async ({
+  nama,
+  no_telp,
+  email,
+  jenis_kelamin,
+  tanggal_lahir,
+  id_kelurahan,
+  password,
+}) => {
   const hashedPassword = await hashPassword(password);
 
-  const result = await pasienRepo.insertPasien({ nama, no_telp, email, jenis_kelamin, tanggal_lahir, id_kelurahan, password: hashedPassword });
+  const result = await pasienRepo.insertPasien({
+    nama,
+    no_telp,
+    email,
+    jenis_kelamin,
+    tanggal_lahir,
+    id_kelurahan,
+    password: hashedPassword,
+  });
   return result;
 };
 
@@ -26,9 +42,13 @@ export const loginPasien = async ({ email, password }) => {
     throw new UnauthorizedError("incorrect password");
   }
 
-  const token = jwt.sign({ id_pasien: pasien.id_pasien, role: "pasien" }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_LIFETIME,
-  });
+  const token = jwt.sign(
+    { id_pasien: pasien.id_pasien, nama: pasien.nama, role: "pasien" },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.JWT_LIFETIME,
+    }
+  );
 
   return token;
 };
