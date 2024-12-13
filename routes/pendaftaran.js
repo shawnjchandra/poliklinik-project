@@ -1,28 +1,24 @@
 import express from "express";
-import {
-  addPendaftaranOnline,
-  addPendaftaranOffline,
-  daftarUlang,
-  getPendaftaran,
-  updateStatus,
-  getRiwayatPendaftaranPasien,
-} from "../controllers/pendaftaran.js";
+import { addPendaftaranOnline, addPendaftaranOffline, daftarUlang, getPendaftaran, updateStatus, getRiwayatPendaftaranPasien } from "../controllers/pendaftaran.js";
+import { authMiddleware } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
-router.post("/online", addPendaftaranOnline);
+// daftar online
+router.post("/online", authMiddleware(["pasien"]), addPendaftaranOnline);
 
-router.post("/offline", addPendaftaranOffline);
+// daftar offline, diisin pet-admin
+router.post("/offline", authMiddleware(["pet-admin"]), addPendaftaranOffline);
 
-router.get("/", getPendaftaran);
+router.get("/", authMiddleware(["dokter", "pet-admin", "perawat"]), getPendaftaran);
 
-router.get("/:id_pasien", getRiwayatPendaftaranPasien);
+router.get("/:id_pasien", authMiddleware(["pasien"]), getRiwayatPendaftaranPasien);
 // router.get("/pemanggilan", getPendaftaranPemanggilan);
 
-router.post("/daftar-ulang/:id_pendaftaran", daftarUlang);
+router.post("/daftar-ulang/:id_pendaftaran", authMiddleware(["pet-admin"]), daftarUlang);
 
 // router.get("/dokter", getPendaftaranDokter);
 
-// update status pendaftaran ke status dokter
-router.post("/status/:id_pendaftaran", updateStatus);
+// update status
+router.post("/status/:id_pendaftaran", authMiddleware(["dokter", "perawat"]), updateStatus);
 
 export default router;

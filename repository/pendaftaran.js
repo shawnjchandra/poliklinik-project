@@ -52,6 +52,17 @@ export const getPendaftaran = async ({ status }) => {
   return queryResult;
 };
 
+export const getPendaftaranDokter = async ({ id_pegawai }) => {
+  const queryText =
+    "SELECT p.id_pasien, p.antrian, pas.nama as nama_pasien, p.id_pendaftaran, pas.no_rkm_medis, peg.nama as nama_dokter, r.no_ruang, jpd.start_time, jpd.end_time, rm.id_rkm_med FROM Pendaftaran p INNER JOIN JadwalPraktikDokter jpd ON p.id_jadwal = jpd.id_jadwal INNER JOIN Pasien pas ON p.id_pasien = pas.id_pasien INNER JOIN Pegawai peg ON jpd.id_pegawai = peg.id_pegawai INNER JOIN Ruang r ON jpd.id_ruang = r.id_ruang LEFT JOIN RekamMedis rm ON rm.id_pendaftaran = p.id_pendaftaran WHERE p.status = 'pemeriksaan' AND p.tanggal_daftar = CURRENT_DATE AND jpd.id_pegawai = $1 ORDER BY p.antrian ASC";
+
+  const values = [id_pegawai];
+
+  const queryResult = await pool.query(queryText, values);
+
+  return queryResult;
+};
+
 /*
     Method : Untuk mendaftarkan pasien
     Param  : Status = 'pendaftaran' atau 'pemanggilan' berdasarkan daftar secara online atau offline (pet)

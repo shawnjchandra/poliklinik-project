@@ -1,20 +1,19 @@
 import express from "express";
-import {
-  createJadwalPraktik,
-  getAllJadwalPraktik,
-  getJadwalPraktik,
-  deleteJadwalPraktik,
-} from "../controllers/jadwalPraktik.js";
+import { createJadwalPraktik, getAllJadwalPraktik, getJadwalPraktik, deleteJadwalPraktik } from "../controllers/jadwalPraktik.js";
 import { validateCreateJadwalPraktik } from "../middleware/validator/jadwal-praktik.js";
+import { authMiddleware } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.post("/", validateCreateJadwalPraktik, createJadwalPraktik);
+// membuat jadwal praktik
+router.post("/", authMiddleware(["sis-admin"]), validateCreateJadwalPraktik, createJadwalPraktik);
 
 router.get("/", getAllJadwalPraktik);
+
+// get spesifik jadwal dokter
 router.get("/:id_pegawai", getJadwalPraktik);
 
-router.delete("/:id_jadwal", deleteJadwalPraktik);
+router.delete("/:id_jadwal", authMiddleware(["sis-admin"]), deleteJadwalPraktik);
 
 // router.post("/inject", isPasswordInjection );
 
