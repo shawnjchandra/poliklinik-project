@@ -53,10 +53,20 @@ app.use(cors());
 
 // Morgan
 import morgan from "morgan";
+import { authMiddleware } from "./middleware/authMiddleware.js";
 app.use(morgan("dev"));
 
-// Routes
+// __dirname
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+//express static, klo terpaksa ga jalan
+// app.use("/uploads", express.static("uploads"));
+
+// Routes
 app.use("/api/pasien", pasienRoute);
 app.use("/api/jadwal-praktik", jadwalPraktikRoute);
 app.use("/api/spesialisasi", spesialisasiRoute);
@@ -85,6 +95,21 @@ app.get("/test", async (req, res) => {
   } catch (err) {
     throw new InternalServerError("error");
   }
+});
+
+import fs from "fs";
+
+// file upload
+// TODO : Extract to route later
+app.get("/uploads/:filename", authMiddleware(["perawat", "dokter"]), (req, res) => {
+  const filename = req.params.filename;
+  const filePath = path.join(__dirname, "uploads", filename);
+
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      res.status(404).send("File not found");
+    }
+  });
 });
 
 //Error handling

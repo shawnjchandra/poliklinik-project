@@ -1,6 +1,8 @@
 import { BadRequestError } from "../errors/BadRequestError.js";
 import { NotFoundError } from "../errors/NotFoundError.js";
 import * as rekMedRepo from "../repository/rekmedis.js";
+import * as dokumenRekamMedisRepo from "../repository/dokumenRekamMedis.js";
+import pool from "../db/db.js";
 
 // Perawat selalu rekam medis yang baru , dan hanya edit informasi dasar pasien yang itu saja
 
@@ -13,27 +15,31 @@ export const createRekamMedis = async ({ id_pasien, id_pendaftaran }) => {
   return queryResult.rows[0];
 };
 
-export const updateInformasiDasar = async ({ tinggi_badan, berat_badan, golongan_darah, diastolik, sistolik, denyut_nadi, id_rkm_med }) => {
-  //   const available = await checkAvailabilityRKM(id_pasien);
+export const updateInformasiDasar = async ({ tinggi_badan, berat_badan, golongan_darah, diastolik, sistolik, denyut_nadi, id_rkm_med, dokumen_rekam_medis }) => {
+  const client = await pool.connect();
 
-  //   if (!available) {
-  //     throw new BadRequestError("There is no 'rekam medis' available for this user ");
-  //   }
+  try {
+    await client.query("BEGIN");
 
-  //   const queryResultRekamMedis = await rekMedRepo.getLatestRekamMedisByIdPasien(id_pasien);
+    if (dokumen_rekam_medis.length !== 0) {
+      await dokumenRekamMedisRepo.insertDokumenRekamMedis({ id_rkm_med, dokumen_rekam_medis }, client);
+    }
 
-  //   const id = queryResultRekamMedis?.id_rkm_med || null;
+    const queryResult = await rekMedRepo.updateInformasiDasar({ tinggi_badan, berat_badan, golongan_darah, diastolik, sistolik, denyut_nadi, id_rkm_med }, client);
 
-  //   if (id === null) {
-  //     throw new BadRequestError("There are no rows found");
-  //   }
+    if (queryResult.rowCount === 0) {
+      throw new NotFoundError(`id_rkm_med ${id_rkm_med} is not found`);
+    }
 
-  const queryResult = await rekMedRepo.updateInformasiDasar({ tinggi_badan, berat_badan, golongan_darah, diastolik, sistolik, denyut_nadi, id_rkm_med });
+    await client.query("COMMIT");
+    return queryResult.rows[0];
+  } catch (error) {
+    await client.query("ROLLBACK");
 
-  if (queryResult.rowCount === 0) {
-    throw new NotFoundError(`id_rkm_med ${id_rkm_med} is not found`);
+    throw error;
+  } finally {
+    client.release();
   }
-  return queryResult.rows[0];
 };
 
 export const updateDiagnosaPasien = async ({ resep_obat, prognosis_tindakan_lanjut, diag_penunjang, pemeriksaan_fisik, pemeriksaan_penunjang, riwayat_penyakit, keluhan, id_rkm_med }) => {
