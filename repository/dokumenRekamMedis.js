@@ -4,7 +4,7 @@ export const getDokumenRekamMedis = async ({ id_rkm_med }) => {
   const queryText = `SELECT * FROM DokumenRekamMedis WHERE id_rkm_med = $1 AND is_active = TRUE`;
   const values = [id_rkm_med];
 
-  const queryResult = await pool.query(queryText);
+  const queryResult = await pool.query(queryText, values);
 
   return queryResult;
 };
