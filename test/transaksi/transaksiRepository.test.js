@@ -24,14 +24,14 @@ describe('Transaksi Repository Tests', () => {
   });
 
   test('getAllPendaftaranTuntas should return all "tuntas" Pendaftaran for today', async () => {
-    const mockQueryResult = { id_pendaftaran: mockPendaftaranId, status: 'tuntas', tanggal_daftar: new Date() };
+    const mockQueryResult = {rows: [{ id_pendaftaran: mockPendaftaranId, status: 'tuntas', tanggal_daftar: new Date() }]};
     
     pool.query.mockResolvedValue(mockQueryResult);
 
     const result = await transaksiRepo.getAllPendaftaranTuntas();
 
     expect(pool.query).toHaveBeenCalledWith("SELECT * FROM Pendaftaran WHERE status = 'tuntas' AND tanggal_daftar = CURRENT_DATE");
-    expect(result).toEqual(mockQueryResult.rows);
+    expect(result).toEqual(mockQueryResult);
   });
 
   test('getPendaftaranTuntas should return a specific "tuntas" Pendaftaran by id', async () => {
