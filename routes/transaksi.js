@@ -1,15 +1,16 @@
 import express from "express"
-import {checkTodayTransaksi, getAllTransaksi, getTransaksi, updateActiveTransaksi} from "../controllers/transaksi.js";
+import {insertTransaksi, getAllPendaftaranTuntas, getTransaksi} from "../controllers/transaksi.js";
+
 
 const router = express.Router();
 
-router.get("/", getAllTransaksi);
+router.get("/", getAllPendaftaranTuntas);
 
-router.post("/:id_pendaftaran/", checkTodayTransaksi);
+// router.post("/:id_pendaftaran/", checkTodayTransaksi);
 
 router.get("/:id_pendaftaran/", getTransaksi);
 
 
-router.post("/:id_pendaftaran/confirm", updateActiveTransaksi);
+router.post("/bayar/:id_pendaftaran/", insertTransaksi);
 
 export default router;

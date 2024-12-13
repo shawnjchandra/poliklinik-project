@@ -1,11 +1,13 @@
 import pool from "../db/db.js";
 
 export const getAllPendaftaranTuntas = async () => {
-    const queryText = "SELECT * FROM Pendaftaran WHERE status = 'tuntas' AND tanggal_daftar = CURRENT_DATE";
+    const queryText = "SELECT * FROM Pendaftaran WHERE status = 'tuntas' AND tanggal_daftar = CURRENT_DATE;";
 
     const queryResult = await pool.query(queryText);
+
+    // console.log(queryResult);
     
-    return queryResult;
+    return queryResult.rows;
 
 };
 
@@ -43,11 +45,12 @@ export const generateTransaksi = async ({id_pendaftaran}) => {
 
 };
 
-export const updateActiveTransaksi = async ({id_transaksi ,metode}) => {
 
-    const queryText = "UPDATE Transaksi SET metode = $1 WHERE id_transaksi = $2 ";
+export const insertTransaksi = async ({id_pendaftaran,biaya_total ,metode}) => {
 
-    const values = [metode, id_transaksi];
+    const queryText = "INSERT INTO Transaksi (metode, biaya_total,id_pendaftaran) VALUES ($1, $2, $3) ";
+
+    const values = [metode,biaya_total, id_pendaftaran];
 
     const queryResult = await pool.query(queryText,values);
 
@@ -85,13 +88,13 @@ export const getTransaksi = async ({id_pendaftaran})=>{
     const queryResult = await pool.query(queryText,values);
     console.log(queryResult);
     
-    return queryResult.rows[0].id_transaksi;
+    return queryResult.rows[0];
 };
 
 
 
-const getBiayaTotal = async (id_pendaftaran) => {
-    console.log("id pendaftaran di getbiayatotal "+id_pendaftaran)
+export const getBiayaTotal = async ({id_pendaftaran}) => {
+
 
     const idDokter = await getIdDokter(id_pendaftaran);
 
