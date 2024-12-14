@@ -4,7 +4,7 @@ import * as transaksiService from "../../services/transaksi";
 import * as transaksiRepo from "../../repository/transaksi";
 
 // Mock repository methods
-jest.mock("../../repository/transaksi");
+jest.mock("../../repository/transaksi.js");
 
 describe("Transaksi Service", () => {
     it("should return all completed registrations", async () => {
@@ -27,34 +27,46 @@ describe("Transaksi Service", () => {
         expect(result).toEqual(mockList);
     });
 
-    it("should handle checking today's transaksi and generate a new one if necessary", async () => {
-        const mockTransaction = { id_transaksi: 3, status: "tuntas" };
-        const mockExists = { rows: [null] };  // Simulate no existing transaction
 
-        // Mock the repository methods
-        transaksiRepo.checkTodayTransaksi.mockResolvedValue(mockExists);
-        transaksiRepo.generateTransaksi.mockResolvedValue(mockTransaction);
+    it("should insert a transaction with biaya_total and metode", async () => {
+        const mockIdPendaftaran = 5;
+        const mockMetode = "ovo";
+        const mockBiayaTotal = 50000;
+        const mockIdPegawai = 2;
 
-        const result = await transaksiService.checkTodayTransaksi({ id_pendaftaran: 5 });
+        const mockInsertResult = {
+          id_transaksi: 3,
+          id_pendaftaran: 5,
+          biaya_total: mockBiayaTotal,
+          metode: "ovo",
+        };
+  
+        // Mock repository methods
+        transaksiRepo.getIdDokter.mockResolvedValue(mockIdPegawai);
+        transaksiRepo.getBiayaTotal.mockResolvedValue(mockBiayaTotal);
 
-        expect(result).toEqual(mockTransaction);
-    });
-
-    it("should update active transaksi", async () => {
-        const mockTransaction = { id_transaksi: 3, status: "tuntas" };
-        const mockUpdateResult = { id_transaksi: 3, status: "tuntas", metode: "ovo " };
-
-        // Mock the repository methods
-        transaksiRepo.getTransaksi.mockResolvedValue(mockTransaction);
-        transaksiRepo.updateActiveTransaksi.mockResolvedValue(mockUpdateResult);
-
-        const result = await transaksiService.updateActiveTransaksi({
-            id_pendaftaran: 5,
-            metode: "ovo ",
+        transaksiRepo.insertTransaksi.mockResolvedValue(mockInsertResult);
+  
+        // Call the service method
+        const result = await transaksiService.insertTransaksi({
+          id_pendaftaran: mockIdPendaftaran,
+          biaya_total: mockBiayaTotal,
+          metode: mockMetode,
         });
-
-        expect(result).toEqual(mockUpdateResult);
+  
+        // Assertions
+        expect(transaksiRepo.getIdDokter).toHaveBeenCalledWith({ id_pendaftaran: mockIdPendaftaran });
+    expect(transaksiRepo.getBiayaTotal).toHaveBeenCalledWith({ id_pegawai: mockIdPegawai });
+    expect(transaksiRepo.insertTransaksi).toHaveBeenCalledWith({
+      id_pendaftaran: mockIdPendaftaran,
+      biaya_total: mockBiayaTotal,
+      metode: mockMetode,
     });
+  
+        expect(result).toEqual(mockInsertResult);
+      });
+    
+
 
     it("should handle getting a specific transaksi", async () => {
         const mockTransaction = { id_transaksi: 3, status: "tuntas" };
