@@ -10,15 +10,10 @@ export const getAllPendaftaranTuntas = async () => {
 };
 
 export const insertTransaksi = async ({id_pendaftaran, metode}) =>{
- 
 
-    console.log("id transaksi1 : " + id_pendaftaran );
-    const biaya_total = await transaksiRepo.getBiayaTotal({id_pendaftaran});
-    console.log("id transaksi2 : " + id_pendaftaran );
-    
-    const id_transaksi = await transaksiRepo.getTransaksi({id_pendaftaran});
-    console.log("id transaksi3 : " + id_pendaftaran );
-    
+    const id_pegawai = await transaksiRepo.getIdDokter({id_pendaftaran});
+ 
+    const biaya_total = await transaksiRepo.getBiayaTotal({id_pegawai});
 
     const result = await transaksiRepo.insertTransaksi({id_pendaftaran,biaya_total,metode});
 
