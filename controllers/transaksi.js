@@ -29,10 +29,10 @@ export const getTransaksi = async (req,res) => {
     return res.json({ success: true, result});
 };    
 // =========================================================
-export const checkTodayTransaksi = async (req,res) => {
-    await transaksiSerivce.checkTodayTransaksi(req.params);
+// export const checkTodayTransaksi = async (req,res) => {
+//     await transaksiSerivce.checkTodayTransaksi(req.params);
     
-    return res.json({ success : true });
-};
+//     return res.json({ success : true });
+// };
 // =========================================================
 
