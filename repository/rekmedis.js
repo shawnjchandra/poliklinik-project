@@ -10,30 +10,60 @@ export const createRekamMedis = async ({ id_pendaftaran }) => {
   return queryResult;
 };
 
-export const updateInformasiDasar = async ({ tinggi_badan, berat_badan, golongan_darah, diastolik, sistolik, denyut_nadi, id_rkm_med }) => {
-  console.log("di repo : " + id_rkm_med);
-
+export const updateInformasiDasar = async ({ tinggi_badan, berat_badan, golongan_darah, diastolik, sistolik, denyut_nadi, id_rkm_med }, client) => {
   const queryText = "UPDATE RekamMedis SET tinggi_badan = $1, berat_badan = $2, golongan_darah = $3, diastolik= $4, sistolik = $5, denyut_nadi = $6 WHERE id_rkm_med = $7 RETURNING *";
 
   const values = [tinggi_badan, berat_badan, golongan_darah, diastolik, sistolik, denyut_nadi, id_rkm_med];
 
-  const queryResult = await pool.query(queryText, values);
+  let queryResult;
+  if (client) {
+    queryResult = await client.query(queryText, values);
+  } else {
+    queryResult = await pool.query(queryText, values);
+  }
 
   return queryResult;
 };
 
-export const updateDiagnosaPasien = async ({ resep_obat, prognosis, diag_penunjang, pemeriksaan_fisik, pemeriksaan_penunjang, riwayat_penyakit, keluhan, id_rkm_med }) => {
+export const updateDiagnosaPasien = async ({ resep_obat, prognosis_tindakan_lanjut, diag_penunjang, pemeriksaan_fisik, pemeriksaan_penunjang, riwayat_penyakit, keluhan, id_rkm_med }) => {
   const queryText = "UPDATE RekamMedis SET resep_obat = $1, prognosis_tindakan_lanjut = $2, diag_penunjang =$3, pemeriksaan_fisik = $4, pemeriksaan_penunjang = $5, riwayat_penyakit = $6, keluhan = $7 WHERE id_rkm_med = $8 RETURNING *";
 
-  const values = [resep_obat, prognosis, diag_penunjang, pemeriksaan_fisik, pemeriksaan_penunjang, riwayat_penyakit, keluhan, id_rkm_med];
+  const values = [resep_obat, prognosis_tindakan_lanjut, diag_penunjang, pemeriksaan_fisik, pemeriksaan_penunjang, riwayat_penyakit, keluhan, id_rkm_med];
 
   const queryResult = await pool.query(queryText, values);
 
   return queryResult;
 };
 
-export const getRekamMedisByIdPasien = async (id_pasien) => {
-  const queryText = "SELECT * FROM RekamMedis WHERE id_pasien = $1";
+export const getRekamMedisByIdPasien = async ({ id_pasien }) => {
+  const queryText = `SELECT 
+    P.id_pendaftaran,
+    P.status,
+    P.antrian,
+    P.tanggal_daftar,
+    P.id_pasien,
+    P.id_jadwal,
+    RM.id_rkm_med,
+    RM.resep_obat,
+    RM.prognosis_tindakan_lanjut,
+    RM.diag_penunjang,
+    RM.pemeriksaan_fisik,
+    RM.pemeriksaan_penunjang,
+    RM.riwayat_penyakit,
+    RM.keluhan,
+    RM.tinggi_badan,
+    RM.berat_badan,
+    RM.golongan_darah,
+    RM.diastolik,
+    RM.sistolik,
+    RM.denyut_nadi
+FROM 
+    Pendaftaran P
+JOIN 
+    RekamMedis RM ON P.id_pendaftaran = RM.id_pendaftaran
+WHERE 
+    P.status = 'tuntas' AND p.id_pasien = $1;
+`;
 
   const values = [id_pasien];
 
@@ -57,7 +87,18 @@ export const getLatestRekamMedisByIdPasien = async (id_pasien) => {
 export const getInformasiDasarRekamMedis = async ({ id_rkm_med }) => {
   // dont use * change later !!!
   const queryText =
-    "SELECT rm.tinggi_badan, rm.id_rkm_med, rm.berat_badan, rm.diastolik, rm.sistolik, rm.golongan_darah, rm.denyut_nadi FROM RekamMedis rm INNER JOIN Pendaftaran p ON rm.id_pendaftaran = p.id_pendaftaran INNER JOIN Pasien pas ON pas.id_pasien = p.id_pasien INNER JOIN JadwalPraktikDokter jpd ON jpd.id_jadwal = p.id_jadwal INNER JOIN Pegawai peg ON jpd.id_pegawai = peg.id_pegawai WHERE id_rkm_med = $1";
+    "SELECT p.id_pasien, rm.tinggi_badan, rm.id_rkm_med, rm.berat_badan, rm.diastolik, rm.sistolik, rm.golongan_darah, rm.denyut_nadi FROM RekamMedis rm INNER JOIN Pendaftaran p ON rm.id_pendaftaran = p.id_pendaftaran INNER JOIN Pasien pas ON pas.id_pasien = p.id_pasien INNER JOIN JadwalPraktikDokter jpd ON jpd.id_jadwal = p.id_jadwal INNER JOIN Pegawai peg ON jpd.id_pegawai = peg.id_pegawai WHERE id_rkm_med = $1";
+
+  const values = [id_rkm_med];
+
+  const queryResult = await pool.query(queryText, values);
+
+  return queryResult;
+};
+
+export const getDiagnosisRekamMedis = async ({ id_rkm_med }) => {
+  const queryText =
+    "SELECT p.id_pasien, rm.resep_obat, rm.id_rkm_med, rm.prognosis_tindakan_lanjut, rm.diag_penunjang, rm.pemeriksaan_fisik, rm.pemeriksaan_penunjang, rm.keluhan FROM RekamMedis rm INNER JOIN Pendaftaran p ON rm.id_pendaftaran = p.id_pendaftaran INNER JOIN Pasien pas ON pas.id_pasien = p.id_pasien INNER JOIN JadwalPraktikDokter jpd ON jpd.id_jadwal = p.id_jadwal INNER JOIN Pegawai peg ON jpd.id_pegawai = peg.id_pegawai WHERE id_rkm_med = $1";
 
   const values = [id_rkm_med];
 

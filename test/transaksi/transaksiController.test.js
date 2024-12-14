@@ -39,32 +39,47 @@ describe("Transaksi Controller", ()=>{
         });
     });
 
-    describe("checkTodayTransaksi", () => {
-        it("should call checkTodayTransaksi with params and return success", async () => {
-          req.params = { id_pendaftaran: 5 };
+    // describe("checkTodayTransaksi", () => {
+    //     it("should call checkTodayTransaksi with params and return success", async () => {
+    //       req.params = { id_pendaftaran: 5 };
     
-          await transaksiController.checkTodayTransaksi(req, res);
+    //       await transaksiController.checkTodayTransaksi(req, res);
     
-          expect(transaksiService.checkTodayTransaksi).toHaveBeenCalledWith(req.params);
-          expect(res.json).toHaveBeenCalledWith({ success: true });
-        });
-      });
+    //       expect(transaksiService.checkTodayTransaksi).toHaveBeenCalledWith(req.params);
+    //       expect(res.json).toHaveBeenCalledWith({ success: true });
+    //     });
+    //   });
     
-      describe("updateActiveTransaksi", () => {
-        it("should update active transaction and return success", async () => {
-          req.params = { id_pendaftaran: 5 };
+      
+      // describe("updateActiveTransaksi", () => {
+      //   it("should update active transaction and return success", async () => {
+      //     req.params = { id_pendaftaran: 5 };
+      //     req.body = { metode: "ovo" };
+    
+      //     await transaksiController.updateActiveTransaksi(req, res);
+    
+      //     expect(transaksiService.updateActiveTransaksi).toHaveBeenCalledWith({
+      //       id_pendaftaran: 5,
+      //       metode: "ovo",
+      //     });
+      //     expect(res.json).toHaveBeenCalledWith({ success: true });
+      //   });
+      // });
+    
+      describe("insertTransaksi",()=>{
+        it("insert new transaksi with metode", async ()=>{
+          req.params = { id_pendaftaran : 5};
           req.body = { metode: "ovo" };
-    
-          await transaksiController.updateActiveTransaksi(req, res);
-    
-          expect(transaksiService.updateActiveTransaksi).toHaveBeenCalledWith({
-            id_pendaftaran: 5,
-            metode: "ovo",
+
+          await transaksiController.insertTransaksi(req,res);
+
+          expect(transaksiService.insertTransaksi).toHaveBeenCalledWith({
+            id_pendaftaran : 5,
+            metode: "ovo"});
+          expect(res.json).toHaveBeenCalledWith({ success : true});
           });
-          expect(res.json).toHaveBeenCalledWith({ success: true });
-        });
       });
-    
+      
       describe("getTransaksi", () => {
         it("should return a specific transaction", async () => {
           req.params = { id_pendaftaran: 5 };

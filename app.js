@@ -53,10 +53,20 @@ app.use(cors());
 
 // Morgan
 import morgan from "morgan";
+import { authMiddleware } from "./middleware/authMiddleware.js";
 app.use(morgan("dev"));
 
-// Routes
+// __dirname
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+//express static, klo terpaksa ga jalan
+// app.use("/uploads", express.static("uploads"));
+
+// Routes
 app.use("/api/pasien", pasienRoute);
 app.use("/api/jadwal-praktik", jadwalPraktikRoute);
 app.use("/api/spesialisasi", spesialisasiRoute);
@@ -73,18 +83,17 @@ app.use("/api/rekam-medis", rekMedisRoute);
 
 app.use("/api/transaksi", transaksiRoute);
 
-app.get("/test", async (req, res) => {
-  // return res.json({ success: true });
+// file upload
+// TODO : Extract to route later
+app.get("/uploads/:filename", authMiddleware(["perawat", "dokter"]), (req, res) => {
+  const filename = req.params.filename;
+  const filePath = path.join(__dirname, "uploads", filename);
 
-  const a = await axios.get("http://192.168.77.50:8080/api/test");
-  return res.json(a.data);
-  try {
-    const a = await pool.query("SELECT 5+5;");
-    console.log(a);
-    return res.json(a.rows);
-  } catch (err) {
-    throw new InternalServerError("error");
-  }
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      res.status(404).send("File not found");
+    }
+  });
 });
 
 //Error handling

@@ -4,9 +4,38 @@ export const getAllPendaftaranTuntas = async () => {
 
     const result = await transaksiRepo.getAllPendaftaranTuntas();
 
+    // console.log(result);
+
     return result;
 };
 
+export const insertTransaksi = async ({id_pendaftaran, metode}) =>{
+ 
+
+    console.log("id transaksi1 : " + id_pendaftaran );
+    const biaya_total = await transaksiRepo.getBiayaTotal({id_pendaftaran});
+    console.log("id transaksi2 : " + id_pendaftaran );
+    
+    const id_transaksi = await transaksiRepo.getTransaksi({id_pendaftaran});
+    console.log("id transaksi3 : " + id_pendaftaran );
+    
+
+    const result = await transaksiRepo.insertTransaksi({id_pendaftaran,biaya_total,metode});
+
+    return result;
+    
+};    
+
+export const getTransaksi = async ({id_pendaftaran}) => {
+    
+    const result = await transaksiRepo.getTransaksi({id_pendaftaran});
+    
+    return result;
+};    
+
+// export const getAllTransaksi = async ({})
+
+// ==================================================================
 export const checkTodayTransaksi = async ({id_pendaftaran}) => {
 
     console.log("id pendaftaran"+id_pendaftaran);
@@ -23,23 +52,4 @@ export const checkTodayTransaksi = async ({id_pendaftaran}) => {
     
     return transaksi;
 };
-
-export const updateActiveTransaksi = async ({id_pendaftaran, metode}) =>{
- 
-
-    console.log("id transaksi : " + id_pendaftaran );
-    const id_transaksi = await transaksiRepo.getTransaksi({id_pendaftaran});
-
-
-    const result = await transaksiRepo.updateActiveTransaksi({id_transaksi,metode});
-
-    return result;
-    
-};    
-
-export const getTransaksi = async ({id_pendaftaran}) => {
-    
-    const result = await transaksiRepo.getTransaksi({id_pendaftaran});
-    
-    return result;
-};    
+// ==================================================================

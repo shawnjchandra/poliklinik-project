@@ -111,7 +111,7 @@ CREATE TABLE Pendaftaran (
 
     -- tambah idJadwal (dia daftar ke jadwal mana (yang jam berapa dan hari apa))
     id_jadwal INT REFERENCES JadwalPraktikDokter(id_jadwal) NOT NULL
-); 
+);
 
 
 
@@ -147,7 +147,8 @@ CREATE TABLE RekamMedis(
 
 CREATE TABLE DokumenRekamMedis (
     id_dkm INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    uploaded_at DATE NOT NULL,
+    uploaded_at DATE NOT NULL DEFAULT CURRENT_DATE,
     path_file VARCHAR(255),
-    id_rkm_med INT REFERENCES RekamMedis(id_rkm_med)
+    id_rkm_med INT REFERENCES RekamMedis(id_rkm_med),
+    is_active BOOLEAN NOT NULL DEFAULT TRUE
 );

@@ -27,22 +27,39 @@ describe("Transaksi Routes", () => {
     });
   });
 
-  describe("POST /api/transaksi/:id_pendaftaran", () => {
-    it("should check if a transaction is completed today", async () => {
+  // describe("POST /api/transaksi/:id_pendaftaran", () => {
+  //   it("should check if a transaction is completed today", async () => {
+  //     const mockResult = { success: true };
+
+  //     // Mocking the service call
+  //     transaksiService.checkTodayTransaksi.mockResolvedValue(mockResult);
+
+  //     const response = await request(app)
+  //       .post("/api/transaksi/5")
+  //       .send({});
+
+  //     expect(response.status).toBe(200);
+  //     expect(response.body.success).toBe(true);
+  //     expect(transaksiService.checkTodayTransaksi).toHaveBeenCalledWith({
+  //       id_pendaftaran: "5",
+  //     });
+  //   });
+  // });
+
+  describe("POST /api/transaksi/bayar/:id_pendaftaran/", ()=>{
+    it("should check if a transaction is completed with certain payment",async ()=>{
       const mockResult = { success: true };
 
-      // Mocking the service call
-      transaksiService.checkTodayTransaksi.mockResolvedValue(mockResult);
+      transaksiService.insertTransaksi.mockResolvedValue(mockResult);
 
-      const response = await request(app)
-        .post("/api/transaksi/5")
-        .send({});
+      const response = await request(app).post("/api/transaksi/bayar/5/").send({ metode : "ovo"});
 
       expect(response.status).toBe(200);
       expect(response.body.success).toBe(true);
-      expect(transaksiService.checkTodayTransaksi).toHaveBeenCalledWith({
-        id_pendaftaran: "5",
-      });
+      expect(transaksiService.insertTransaksi).toHaveBeenCalledWith({
+         id_pendaftaran : "5",
+        metode: "ovo"
+       });
     });
   });
 
@@ -70,23 +87,23 @@ describe("Transaksi Routes", () => {
     });
   });
 
-  describe("POST /api/transaksi/:id_pendaftaran/confirm", () => {
-    it("should update an active transaction and return success", async () => {
-      const mockUpdateResult = { success: true };
+  // describe("POST /api/transaksi/:id_pendaftaran/confirm", () => {
+  //   it("should update an active transaction and return success", async () => {
+  //     const mockUpdateResult = { success: true };
 
-      // Mocking the service call
-      transaksiService.updateActiveTransaksi.mockResolvedValue(mockUpdateResult);
+  //     // Mocking the service call
+  //     transaksiService.updateActiveTransaksi.mockResolvedValue(mockUpdateResult);
 
-      const response = await request(app)
-        .post("/api/transaksi/5/confirm")
-        .send({ metode: "ovo" });
+  //     const response = await request(app)
+  //       .post("/api/transaksi/5/confirm")
+  //       .send({ metode: "ovo" });
 
-      expect(response.status).toBe(200);
-      expect(response.body.success).toBe(true);
-      expect(transaksiService.updateActiveTransaksi).toHaveBeenCalledWith({
-        id_pendaftaran: "5",
-        metode: "ovo",
-      });
-    });
-  });
+  //     expect(response.status).toBe(200);
+  //     expect(response.body.success).toBe(true);
+  //     expect(transaksiService.updateActiveTransaksi).toHaveBeenCalledWith({
+  //       id_pendaftaran: "5",
+  //       metode: "ovo",
+  //     });
+  //   });
+  // });
 });

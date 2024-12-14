@@ -11,21 +11,13 @@ const validateFields = (req, requiredFields) => {
 };
 
 export const validateRegisterPegawai = async (req, res, next) => {
-  const requiredFields = [
-    "nama",
-    "no_telp",
-    "email",
-    "password",
-    "id_kelurahan",
-    "NIP",
-    "role",
-  ];
+  const requiredFields = ["nama", "no_telp", "email", "password", "id_kelurahan", "NIP", "role"];
 
   validateFields(req, requiredFields);
 
   const { email, role, password } = req.body;
 
-  if (!["sis-admin", "pet-admin", "perawat"].includes(role)) {
+  if (!["sis-admin", "pet-admin", "perawat", "dokter"].includes(role)) {
     throw new BadRequestError("Role isn't available");
   }
 
@@ -41,16 +33,7 @@ export const validateRegisterPegawai = async (req, res, next) => {
 };
 
 export const validateRegisterDokter = async (req, res, next) => {
-  const requiredField = [
-    "nama",
-    "no_telp",
-    "email",
-    "password",
-    "id_kelurahan",
-    "NIP",
-    "biaya_kunjungan",
-    "id_spesialisasi",
-  ];
+  const requiredField = ["nama", "no_telp", "email", "password", "id_kelurahan", "NIP", "biaya_kunjungan", "id_spesialisasi"];
 
   validateFields(req, requiredField);
 
