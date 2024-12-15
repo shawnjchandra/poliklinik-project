@@ -43,14 +43,36 @@ export const addPendaftaranOffline = async ({ id_pasien, id_jadwal }) => {
   // const idJadwal = await
 
   // Tambah id_jadwal
-  const result = await pendaftaranRepo.addPendaftaran({
-    status: "pemanggilan",
-    tanggal_daftar: formattedDate,
-    id_pasien,
-    id_jadwal,
-  });
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
 
-  return result;
+    const queryResult = await pendaftaranRepo.addPendaftaran({
+      status: "pemanggilan",
+      tanggal_daftar: formattedDate,
+      id_pasien,
+      id_jadwal,
+    });
+
+    const id_pendaftaran = queryResult.rows[0].id_pendaftaran;
+
+    await client.query("SELECT pg_advisory_lock($1)", [12345]);
+    const queryResultLastAntrian = await pendaftaranRepo.getLatestAntrian(client);
+
+    const nextAntrian = queryResultLastAntrian.rows[0].latest_antrian + 1;
+
+    await pendaftaranRepo.updateAntrian({ id_pendaftaran, antrian: nextAntrian }, client);
+
+    await rekamMedisRepo.createRekamMedis({ id_pendaftaran });
+
+    await client.query("COMMIT");
+    return id_pendaftaran;
+  } catch (error) {
+    await client.query("ROLLBACK");
+    throw error;
+  } finally {
+    client.release();
+  }
 };
 
 export const updateStatus = async ({ status, id_pendaftaran, prevStatus }) => {
