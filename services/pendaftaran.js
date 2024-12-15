@@ -12,7 +12,10 @@ export const getRiwayatPendaftaranPasien = async (id_pasien) => {
 };
 
 export const getPendaftaranPasienById = async (id_pasien, id_pendaftaran) => {
-  const result = await pendaftaranRepo.getPendaftaranPasienById(id_pasien, id_pendaftaran);
+  const result = await pendaftaranRepo.getPendaftaranPasienById(
+    id_pasien,
+    id_pendaftaran
+  );
 
   return result.rows;
 };
@@ -31,7 +34,7 @@ export const addPendaftaranOnline = async ({ id_pasien, id_jadwal }) => {
     id_jadwal,
   });
 
-  return result;
+  return result.rows[0];
 };
 
 // tanggal_daftar langsung dari program + 1 hari
@@ -57,11 +60,16 @@ export const addPendaftaranOffline = async ({ id_pasien, id_jadwal }) => {
     const id_pendaftaran = queryResult.rows[0].id_pendaftaran;
 
     await client.query("SELECT pg_advisory_lock($1)", [12345]);
-    const queryResultLastAntrian = await pendaftaranRepo.getLatestAntrian(client);
+    const queryResultLastAntrian = await pendaftaranRepo.getLatestAntrian(
+      client
+    );
 
     const nextAntrian = queryResultLastAntrian.rows[0].latest_antrian + 1;
 
-    await pendaftaranRepo.updateAntrian({ id_pendaftaran, antrian: nextAntrian }, client);
+    await pendaftaranRepo.updateAntrian(
+      { id_pendaftaran, antrian: nextAntrian },
+      client
+    );
 
     await rekamMedisRepo.createRekamMedis({ id_pendaftaran });
 
@@ -83,7 +91,9 @@ export const updateStatus = async ({ status, id_pendaftaran, prevStatus }) => {
   });
 
   if (queryResult.rowCount === 0) {
-    throw new NotFoundError(`pendaftaran with id_pendaftaran ${id_pendaftaran} and prev status = ${prevStatus} is not found`);
+    throw new NotFoundError(
+      `pendaftaran with id_pendaftaran ${id_pendaftaran} and prev status = ${prevStatus} is not found`
+    );
   }
   return queryResult;
 };
@@ -100,18 +110,28 @@ export const daftarUlang = async ({ id_pendaftaran }) => {
   try {
     await client.query("BEGIN");
 
-    const queryResultStatus = await pendaftaranRepo.updateStatus({ status: "pemanggilan", id_pendaftaran, prevStatus: "pendaftaran" }, client);
+    const queryResultStatus = await pendaftaranRepo.updateStatus(
+      { status: "pemanggilan", id_pendaftaran, prevStatus: "pendaftaran" },
+      client
+    );
 
     if (queryResultStatus.rowCount === 0) {
-      throw new NotFoundError(`id_pendaftaran ${id_pendaftaran} with status = 'pendaftaran' for today is not found`);
+      throw new NotFoundError(
+        `id_pendaftaran ${id_pendaftaran} with status = 'pendaftaran' for today is not found`
+      );
     }
 
     await client.query("SELECT pg_advisory_lock($1)", [12345]);
-    const queryResultLastAntrian = await pendaftaranRepo.getLatestAntrian(client);
+    const queryResultLastAntrian = await pendaftaranRepo.getLatestAntrian(
+      client
+    );
 
     const nextAntrian = queryResultLastAntrian.rows[0].latest_antrian + 1;
 
-    await pendaftaranRepo.updateAntrian({ id_pendaftaran, antrian: nextAntrian }, client);
+    await pendaftaranRepo.updateAntrian(
+      { id_pendaftaran, antrian: nextAntrian },
+      client
+    );
 
     await rekamMedisRepo.createRekamMedis({ id_pendaftaran });
 
@@ -133,7 +153,9 @@ export const getPendaftaran = async ({ status }) => {
 };
 
 export const getPendaftaranDokter = async ({ id_pegawai }) => {
-  const queryResult = await pendaftaranRepo.getPendaftaranDokter({ id_pegawai });
+  const queryResult = await pendaftaranRepo.getPendaftaranDokter({
+    id_pegawai,
+  });
 
   return queryResult.rows;
 };
