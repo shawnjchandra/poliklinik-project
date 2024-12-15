@@ -82,7 +82,7 @@ export const getTransaksi = async ({ id_pendaftaran }) => {
 };
 
 export const getBiayaTotal = async ({ id_pendaftaran }) => {
-  const idDokter = await getIdDokter(id_pendaftaran);
+  const idDokter = await getIdDokter({ id_pendaftaran });
 
   console.log("idDokter: " + idDokter);
 
@@ -96,12 +96,14 @@ export const getBiayaTotal = async ({ id_pendaftaran }) => {
   return queryResult.rows[0].biaya_kunjungan;
 };
 
-export const getIdDokter = async (id_pendaftaran) => {
+export const getIdDokter = async ({ id_pendaftaran }) => {
   const queryText = "SELECT id_pegawai From Pendaftaran p JOIN JadwalPraktikDokter jpd ON p.id_jadwal = jpd.id_jadwal AND p.id_pendaftaran = $1";
 
   const values = [id_pendaftaran];
 
   const queryResult = await pool.query(queryText, values);
+
+  console.log("KSDJFlSJFKLSDJLKFJKL", id_pendaftaran);
 
   // console.log(queryResult.rows[0].id_pegawai);
 
