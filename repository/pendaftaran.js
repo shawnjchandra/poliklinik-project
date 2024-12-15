@@ -70,14 +70,19 @@ export const getPendaftaranDokter = async ({ id_pegawai }) => {
               * untuk offline dan online, sama" pas daftar ulang di petugas administrasi?
             id_pasien = id dari pasien 
 */
-export const addPendaftaran = async ({ status, tanggal_daftar, id_pasien, id_jadwal }) => {
+export const addPendaftaran = async ({ status, tanggal_daftar, id_pasien, id_jadwal }, client) => {
   const queryText = "INSERT INTO Pendaftaran (status, tanggal_daftar, id_pasien, id_jadwal) VALUES ($1, $2, $3, $4) RETURNING id_pendaftaran";
 
   const values = [status, tanggal_daftar, id_pasien, id_jadwal];
 
-  const queryResult = await pool.query(queryText, values);
+  let queryResult;
+  if (client) {
+    queryResult = await client.query(queryText, values);
+  } else {
+    queryResult = await pool.query(queryText, values);
+  }
 
-  return queryResult.rows[0];
+  return queryResult;
 };
 
 /*

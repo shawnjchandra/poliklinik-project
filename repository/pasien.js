@@ -1,3 +1,4 @@
+import { query } from "express";
 import pool from "../db/db.js";
 
 export const insertPasien = async ({ nama, no_telp, email, jenis_kelamin, tanggal_lahir, id_kelurahan, password }) => {
@@ -32,6 +33,15 @@ export const getPassword = async ({ password }) => {
   const values = [password];
 
   const queryResult = await pool.query(queryText, values);
+
+  return queryResult;
+};
+
+export const getAllPasien = async () => {
+  // change ltr, do not use *
+  const queryText = `SELECT * FROM Pasien`;
+
+  const queryResult = await pool.query(queryText);
 
   return queryResult;
 };

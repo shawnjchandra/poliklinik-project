@@ -13,3 +13,9 @@ export const loginPasien = async (req, res) => {
 
   return res.json({ success: true, token });
 };
+
+export const getAllPasien = async (req, res) => {
+  const pasien = await pasienService.getAllPasien();
+
+  return res.json(pasien);
+};
