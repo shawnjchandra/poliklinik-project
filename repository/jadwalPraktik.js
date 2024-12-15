@@ -29,7 +29,8 @@ export const getAllJadwalPraktik = async () => {
 
 export const getJadwalPraktik = async (id_pegawai) => {
   const queryText =
-    "SELECT * FROM JadwalPraktikDokter jpd INNER JOIN Ruang r ON jpd.id_ruang = r.id_ruang WHERE jpd.id_pegawai = $1 AND jpd.is_active=TRUE";
+    "SELECT jpd.*, r.*, (jpd.kuota - ( SELECT COUNT(p.id_pendaftaran) FROM Pendaftaran p WHERE p.id_jadwal = jpd.id_jadwal AND p.tanggal_daftar = CURRENT_DATE + INTERVAL '1 day' ))::int AS sisa_kuota FROM JadwalPraktikDokter jpd INNER JOIN Ruang r ON jpd.id_ruang = r.id_ruang WHERE jpd.id_pegawai = $1 AND jpd.is_active = TRUE ";
+
   const values = [id_pegawai];
 
   const queryResult = await pool.query(queryText, values);
