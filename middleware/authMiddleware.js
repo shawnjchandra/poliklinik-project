@@ -7,7 +7,7 @@ export const authMiddleware = (allowedRoles) => {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
 
-    console.log(token);
+    console.log("token: "+token);
     if (!token) {
       throw new UnauthorizedError("token not provided");
     }

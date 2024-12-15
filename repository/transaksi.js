@@ -122,3 +122,5 @@ export const getIdDokter = async ({id_pendaftaran}) => {
 
     return queryResult.rows[0].id_pegawai;
 }
+
+// Update

@@ -7,7 +7,7 @@ const router = express.Router();
 router.post("/online", authMiddleware(["pasien"]), addPendaftaranOnline);
 
 // daftar offline, diisin pet-admin
-router.post("/offline", authMiddleware(["pet-admin"]), addPendaftaranOffline);
+router.post("/offline",/* authMiddleware(["pet-admin"]),*/ addPendaftaranOffline);
 
 router.get("/", authMiddleware(["dokter", "pet-admin", "perawat"]), getPendaftaran);
 
