@@ -1,38 +1,34 @@
-import * as transaksiSerivce from "../services/transaksi.js";
+import * as transaksiService from "../services/transaksi.js";
 
-export const getAllPendaftaranTuntas = async (req,res) => {
-    const list = await transaksiSerivce.getAllPendaftaranTuntas();
+export const getAllPendaftaranBelumBayar = async (req, res) => {
+  const pendaftaranBelumBayar = await transaksiService.getAllPendaftaranBelumBayar();
 
-    // console.log(list);
+  // console.log(list);
 
-    return res.json({ success : true, list});
-
+  return res.json(pendaftaranBelumBayar);
 };
 
-export const insertTransaksi = async (req,res) =>{
-    const {id_pendaftaran} = req.params;
+export const insertTransaksi = async (req, res) => {
+  const { id_pendaftaran } = req.params;
 
-    const {metode} = req.body;
+  const { metode } = req.body;
 
-    console.log(id_pendaftaran+" "+metode)
+  console.log(id_pendaftaran + " " + metode);
 
-    await transaksiSerivce.insertTransaksi({id_pendaftaran, metode});
+  await transaksiService.insertTransaksi({ id_pendaftaran, metode });
 
-    return res.json({ success : true});
-    
-};    
+  return res.json({ success: true });
+};
 
-export const getTransaksi = async (req,res) => {
-    
-    const result = await transaksiSerivce.getTransaksi(req.params);
-    
-    return res.json({ success: true, result});
-};    
+export const getTransaksi = async (req, res) => {
+  const result = await transaksiService.getTransaksi(req.params);
+
+  return res.json({ success: true, result });
+};
 // =========================================================
 // export const checkTodayTransaksi = async (req,res) => {
 //     await transaksiSerivce.checkTodayTransaksi(req.params);
-    
+
 //     return res.json({ success : true });
 // };
 // =========================================================
-

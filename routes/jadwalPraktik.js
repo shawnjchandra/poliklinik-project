@@ -6,7 +6,7 @@ import { authMiddleware } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 // membuat jadwal praktik
-router.post("/", authMiddleware(["sis-admin"]), validateCreateJadwalPraktik, createJadwalPraktik);
+router.post("/", authMiddleware(["pet-admin"]), validateCreateJadwalPraktik, createJadwalPraktik);
 
 router.get("/", getAllJadwalPraktik);
 
