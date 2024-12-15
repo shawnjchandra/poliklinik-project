@@ -9,8 +9,6 @@ export const getAllPendaftaranBelumBayar = async () => {
 };
 
 export const insertTransaksi = async ({ id_pendaftaran, metode }) => {
-  console.log("HEREEEEE", id_pendaftaran, metode);
-  console.log({ id_pendaftaran });
   const id_pegawai = await transaksiRepo.getIdDokter({ id_pendaftaran });
 
   const biaya_total = await transaksiRepo.getBiayaTotal({ id_pegawai });
