@@ -105,7 +105,8 @@ export const getIdDokter = async ({ id_pendaftaran }) => {
 
   console.log("KSDJFlSJFKLSDJLKFJKL", id_pendaftaran);
 
-  // console.log(queryResult.rows[0].id_pegawai);
 
   return queryResult.rows[0].id_pegawai;
 };
+
+
