@@ -3,9 +3,9 @@ import * as transaksiService from "../services/transaksi.js";
 export const getAllPendaftaranBelumBayar = async (req, res) => {
   const pendaftaranBelumBayar = await transaksiService.getAllPendaftaranBelumBayar();
 
-  // console.log(list);
+  console.log(pendaftaranBelumBayar);
 
-  return res.json(pendaftaranBelumBayar);
+  return res.json(  pendaftaranBelumBayar);
 };
 
 export const insertTransaksi = async (req, res) => {
