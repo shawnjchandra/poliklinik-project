@@ -9,7 +9,7 @@ describe("Transaksi Repository", () => {
     jest.clearAllMocks();
   });
 
-  describe("getAllPendaftaranTuntas", () => {
+  describe("getAllPendaftaranBelumBayar", () => {
     it("should return all pendaftaran tuntas for today", async () => {
       const mockResult = [
         { id_pendaftaran: 1, status: "tuntas", tanggal_daftar: new Date() },
@@ -17,10 +17,10 @@ describe("Transaksi Repository", () => {
 
       pool.query.mockResolvedValue({ rows: mockResult });
 
-      const result = await transaksiRepo.getAllPendaftaranTuntas();
+      const result = await transaksiRepo.getAllPendaftaranBelumBayar();
 
       expect(pool.query).toHaveBeenCalledWith(
-        "SELECT * FROM Pendaftaran WHERE status = 'tuntas' AND tanggal_daftar = CURRENT_DATE;"
+        "SELECT p.id_pasien, p.antrian, pas.nama as nama_pasien, p.id_pendaftaran, pas.no_rkm_medis, peg.nama as nama_dokter, r.no_ruang, jpd.start_time, jpd.end_time, rm.id_rkm_med, t.id_transaksi, peg.biaya_kunjungan FROM Pendaftaran p INNER JOIN JadwalPraktikDokter jpd ON p.id_jadwal = jpd.id_jadwal INNER JOIN Pasien pas ON p.id_pasien = pas.id_pasien INNER JOIN Pegawai peg ON jpd.id_pegawai = peg.id_pegawai INNER JOIN Ruang r ON jpd.id_ruang = r.id_ruang LEFT JOIN RekamMedis rm ON rm.id_pendaftaran = p.id_pendaftaran LEFT JOIN Transaksi t ON p.id_pendaftaran = t.id_pendaftaran WHERE p.status = 'tuntas' AND p.tanggal_daftar = CURRENT_DATE AND t.id_transaksi IS NULL ORDER BY p.antrian ASC"
       );
       expect(result).toEqual(mockResult);
     });
