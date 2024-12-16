@@ -49,8 +49,8 @@ export const getAllJadwalPraktik = async () => {
   return result;
 };
 
-export const getJadwalPraktik = async (id_pegawai) => {
-  const queryResult = await jadwalPraktikRepo.getJadwalPraktik(id_pegawai);
+export const getJadwalPraktik = async (id_pegawai, day) => {
+  const queryResult = await jadwalPraktikRepo.getJadwalPraktik(id_pegawai, day);
 
   return queryResult.rows;
 };
