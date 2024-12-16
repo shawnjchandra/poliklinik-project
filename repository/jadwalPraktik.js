@@ -1,16 +1,8 @@
 import { query } from "express";
 import pool from "../db/db.js";
 
-export const insertJadwalPraktik = async ({
-  hari,
-  start_time,
-  end_time,
-  kuota,
-  id_pegawai,
-  id_ruang,
-}) => {
-  const queryText =
-    "INSERT INTO JadwalPraktikDokter (hari, start_time, end_time, kuota, id_pegawai, id_ruang) VALUES($1, $2, $3, $4, $5, $6) RETURNING id_jadwal";
+export const insertJadwalPraktik = async ({ hari, start_time, end_time, kuota, id_pegawai, id_ruang }) => {
+  const queryText = "INSERT INTO JadwalPraktikDokter (hari, start_time, end_time, kuota, id_pegawai, id_ruang) VALUES($1, $2, $3, $4, $5, $6) RETURNING id_jadwal";
   const values = [hari, start_time, end_time, kuota, id_pegawai, id_ruang];
 
   const queryResult = await pool.query(queryText, values);
@@ -19,8 +11,7 @@ export const insertJadwalPraktik = async ({
 };
 
 export const getAllJadwalPraktik = async () => {
-  const queryText =
-    "SELECT * FROM JadwalPraktikDokter jpd INNER JOIN Ruang r ON jpd.id_ruang = r.id_ruang ";
+  const queryText = "SELECT * FROM JadwalPraktikDokter jpd INNER JOIN Ruang r ON jpd.id_ruang = r.id_ruang ";
 
   const queryResult = await pool.query(queryText);
 
@@ -39,8 +30,7 @@ export const getJadwalPraktik = async (id_pegawai) => {
 };
 
 export const deleteJadwalPraktik = async (id_jadwal) => {
-  const queryText =
-    "UPDATE JadwalPraktikDokter SET is_active = FALSE WHERE id_jadwal = $1";
+  const queryText = "UPDATE JadwalPraktikDokter SET is_active = FALSE WHERE id_jadwal = $1";
   const values = [id_jadwal];
 
   const queryResult = await pool.query(queryText, values);

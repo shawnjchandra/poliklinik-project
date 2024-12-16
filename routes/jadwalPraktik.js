@@ -13,7 +13,7 @@ router.get("/", getAllJadwalPraktik);
 // get spesifik jadwal dokter
 router.get("/:id_pegawai", getJadwalPraktik);
 
-router.delete("/:id_jadwal", authMiddleware(["sis-admin"]), deleteJadwalPraktik);
+router.delete("/:id_jadwal", authMiddleware(["pet-admin"]), deleteJadwalPraktik);
 
 // router.post("/inject", isPasswordInjection );
 
