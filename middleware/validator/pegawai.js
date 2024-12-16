@@ -11,7 +11,14 @@ const validateFields = (req, requiredFields) => {
 };
 
 export const validateRegisterPegawai = async (req, res, next) => {
-  const requiredFields = ["nama", "no_telp", "email", "password", "id_kelurahan", "NIP", "role"];
+  const requiredFields = [
+    "nama",
+    "no_telp",
+    "email",
+    "password",
+    "id_kelurahan",
+    "role",
+  ];
 
   validateFields(req, requiredFields);
 
@@ -33,7 +40,15 @@ export const validateRegisterPegawai = async (req, res, next) => {
 };
 
 export const validateRegisterDokter = async (req, res, next) => {
-  const requiredField = ["nama", "no_telp", "email", "password", "id_kelurahan", "NIP", "biaya_kunjungan", "id_spesialisasi"];
+  const requiredField = [
+    "nama",
+    "no_telp",
+    "email",
+    "password",
+    "id_kelurahan",
+    "biaya_kunjungan",
+    "id_spesialisasi",
+  ];
 
   validateFields(req, requiredField);
 
