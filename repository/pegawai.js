@@ -6,13 +6,12 @@ export const insertPegawai = async ({
   email,
   password,
   id_kelurahan,
-  NIP,
   role,
   biaya_kunjungan,
   id_spesialisasi,
 }) => {
   const insertPegawaiQuery =
-    "INSERT INTO Pegawai (nama, no_telp, email, password, id_kelurahan, NIP, role, biaya_kunjungan, id_spesialisasi) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
+    "INSERT INTO Pegawai (nama, no_telp, email, password, id_kelurahan, role, biaya_kunjungan, id_spesialisasi) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)";
 
   const values = [
     nama,
@@ -20,7 +19,6 @@ export const insertPegawai = async ({
     email,
     password,
     id_kelurahan,
-    NIP,
     role,
     biaya_kunjungan,
     id_spesialisasi,
