@@ -1,9 +1,11 @@
--- Hapus tabel dan tipe secara berurutan sesuai dengan dependency
-DROP TABLE IF EXISTS DokumenRekamMedis, RekamMedis, Transaksi, PendaftaranToJadwal, Pendaftaran, JadwalPraktikDokter, Pegawai, Pasien, Kelurahan, Kecamatan, Spesialisasi, Ruang;
-DROP TYPE IF EXISTS GENDER, GOL_DARAH, ROLE_P, STATUS_DAFTAR, HARI, METODE;
+DROP TABLE IF EXISTS Kelurahan, Pasien, RekamMedis, DokumenRekamMedis, Pegawai, Pendaftaran,JadwalPraktikDokter,Transaksi, PendaftaranToJadwal;
 
--- Buat tabel sesuai urutan dependency
-CREATE TABLE Kecamatan(
+DROP TABLE IF EXISTS Pegawai, Pendaftaran, JadwalPraktikDokter;
+DROP TABLE IF EXISTS Pasien, RekamMedis, DokumenRekamMedis;
+DROP TABLE IF EXISTS Kecamatan, Kelurahan, Spesialisasi, Ruang;
+DROP TABLE IF EXISTS Transaksi, PendaftaranToJadwal;
+DROP TYPE IF EXISTS GENDER, GOL_DARAH,ROLE_P, STATUS_DAFTAR,HARI,METODE;
+CREATE TABLE  Kecamatan(
     id_kecamatan INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     nama_kecamatan VARCHAR(200) NOT NULL
 );
@@ -12,7 +14,7 @@ CREATE TABLE Kelurahan(
     id_kelurahan INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     nama_kelurahan VARCHAR(200) NOT NULL,
     id_kecamatan INT REFERENCES Kecamatan(id_kecamatan) NOT NULL,
-    UNIQUE(id_kecamatan, nama_kelurahan)
+	UNIQUE(id_kecamatan, nama_kelurahan)
 );
 
 CREATE TABLE Spesialisasi(
@@ -26,17 +28,16 @@ CREATE TABLE Ruang(
     no_ruang VARCHAR(255) UNIQUE NOT NULL
 );
 
--- Definisi tipe enumerasi
-CREATE TYPE GENDER AS ENUM ('perempuan', 'laki');
-CREATE TYPE GOL_DARAH AS ENUM ('a', 'b', 'ab', 'o');
-CREATE TYPE ROLE_P AS ENUM ('dokter', 'sis-admin', 'pet-admin', 'perawat');
-CREATE TYPE STATUS_DAFTAR AS ENUM ('pendaftaran', 'pemanggilan', 'dokter', 'pemeriksaan', 'tuntas');
-CREATE TYPE HARI AS ENUM ('senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu', 'minggu');
-CREATE TYPE METODE AS ENUM ('ovo', 'gopay', 'bca', 'tunai');
+-- P = Perempuan, L = Laki
+CREATE TYPE GENDER AS ENUM ('perempuan','laki');
+-- A = BOOLEAN, D = Disabled
+-- CREATE TYPE BOOLEAN AS ENUM ('A','D');
+-- golongan darah
+CREATE TYPE GOL_DARAH AS ENUM ('a','b','ab','o');
 
--- Tambahkan ekstensi jika belum ada
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
+-- PASIEN
 CREATE TABLE Pasien(
     id_pasien INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     nama VARCHAR(255) NOT NULL,
@@ -48,15 +49,18 @@ CREATE TABLE Pasien(
     jenis_kelamin GENDER NOT NULL,
     tanggal_lahir DATE NOT NULL,
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
-    id_kelurahan INT REFERENCES Kelurahan(id_kelurahan)
+    id_kelurahan INT REFERENCES Kelurahan(id_kelurahan) 
 );
 
+-- PEGAWAI
+-- role tambahan
+CREATE TYPE ROLE_P AS ENUM ('dokter', 'sis-admin','pet-admin','perawat');
 CREATE TABLE Pegawai(
     id_pegawai INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     nama VARCHAR(255) NOT NULL,
     no_telp CHAR(12) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL, 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
     id_kelurahan INT REFERENCES Kelurahan(id_kelurahan) NOT NULL,
@@ -65,26 +69,44 @@ CREATE TABLE Pegawai(
     id_spesialisasi INT REFERENCES Spesialisasi(id_spesialisasi) NULL
 );
 
-CREATE TABLE JadwalPraktikDokter(
+CREATE TYPE HARI AS ENUM ('senin','selasa','rabu','kamis','jumat','sabtu','minggu');
+-- TODO :
+-- Constraint check untuk dokter 
+CREATE TABLE JadwalPraktikDokter (
     id_jadwal INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     hari HARI NOT NULL,
     start_time TIME NOT NULL,
-    end_time TIME NOT NULL,
+    end_time TIME NOT NULL ,
     kuota INT NOT NULL,
     id_pegawai INT REFERENCES Pegawai(id_pegawai) NOT NULL,
     id_ruang INT REFERENCES Ruang(id_ruang) NOT NULL,
     is_active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
-CREATE TABLE Pendaftaran(
+--
+CREATE TYPE STATUS_DAFTAR AS ENUM ('pendaftaran','pemanggilan','dokter', 'pemeriksaan','tuntas');
+-- TODO :
+-- Antrian reset by day (daily)
+-- Ide kepepet : count (di hari itu) + 1 (kalo trigger ga jalan) 
+CREATE TABLE Pendaftaran (
     id_pendaftaran INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     status STATUS_DAFTAR NOT NULL,
-    antrian INT NULL,
+    antrian INT NULL ,
+    
+    -- terima tanggal daftar ,id_pasien
     tanggal_daftar DATE NOT NULL,
     id_pasien INT REFERENCES Pasien(id_pasien) NOT NULL,
+    -- tambah idJadwal (dia daftar ke jadwal mana (yang jam berapa dan hari apa))
     id_jadwal INT REFERENCES JadwalPraktikDokter(id_jadwal) NOT NULL
 );
 
+CREATE TYPE METODE AS ENUM ('ovo','gopay','bca', 'tunai');
+CREATE TABLE Transaksi(
+    id_transaksi INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    metode METODE NOT NULL,
+    biaya_total INT NOT NULL,
+    id_pendaftaran INT REFERENCES Pendaftaran(id_pendaftaran) NOT NULL 
+);
 CREATE TABLE RekamMedis(
     id_rkm_med INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     resep_obat VARCHAR(255),
@@ -103,16 +125,10 @@ CREATE TABLE RekamMedis(
     id_pendaftaran INT REFERENCES Pendaftaran(id_pendaftaran)
 );
 
-CREATE TABLE DokumenRekamMedis(
+CREATE TABLE DokumenRekamMedis (
     id_dkm INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    uploaded_at DATE NOT NULL,
+    uploaded_at DATE NOT NULL DEFAULT CURRENT_DATE,
     path_file VARCHAR(255),
-    id_rkm_med INT REFERENCES RekamMedis(id_rkm_med)
-);
-
-CREATE TABLE Transaksi(
-    id_transaksi INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    metode METODE NOT NULL,
-    biaya_total INT NOT NULL,
-    id_pendaftaran INT REFERENCES Pendaftaran(id_pendaftaran) NOT NULL
+    id_rkm_med INT REFERENCES RekamMedis(id_rkm_med),
+    is_active BOOLEAN NOT NULL DEFAULT TRUE
 );
