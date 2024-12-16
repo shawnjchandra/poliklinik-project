@@ -17,12 +17,12 @@ describe("Transaksi Controller", ()=>{
         jest.clearAllMocks();
     });
 
-    describe("getAllPendaftaranTuntas", () => {
+    describe("getAllPendaftaranBelumBayar", () => {
         it("should return all completed registrations", async () => {
             const mockList = [
                 {
                     id_pendaftaran: 5,
-                    status: "getPendaftaranTuntas",
+                    status: "tuntas",
                     antrian: 10,
                     tanggal_daftar: "10-12-2024",
                     id_pasien: 2,
@@ -30,12 +30,12 @@ describe("Transaksi Controller", ()=>{
                 },
             ];
 
-            transaksiService.getAllPendaftaranTuntas.mockReturnValue(mockList);
+            transaksiService.getAllPendaftaranBelumBayar.mockReturnValue(mockList);
 
-            await transaksiController.getAllPendaftaranTuntas(req, res);
+            await transaksiController.getAllPendaftaranBelumBayar(req, res);
 
-            expect(transaksiService.getAllPendaftaranTuntas).toHaveBeenCalled();
-            expect(res.json).toHaveBeenCalledWith({ success: true, list: mockList });
+            expect(transaksiService.getAllPendaftaranBelumBayar).toHaveBeenCalled();
+            expect(res.json).toHaveBeenCalledWith({list :mockList});
         });
     });
 
