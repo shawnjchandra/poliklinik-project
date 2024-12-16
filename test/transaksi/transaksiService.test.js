@@ -20,9 +20,9 @@ describe("Transaksi Service", () => {
         ];
 
         // Mock the repository method
-        transaksiRepo.getAllPendaftaranTuntas.mockResolvedValue(mockList);
+        transaksiRepo.getAllPendaftaranBelumBayar.mockResolvedValue(mockList);
 
-        const result = await transaksiService.getAllPendaftaranTuntas();
+        const result = await transaksiService.getAllPendaftaranBelumBayar();
 
         expect(result).toEqual(mockList);
     });
