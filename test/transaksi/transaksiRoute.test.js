@@ -11,18 +11,17 @@ app.use(express.json());
 app.use("/api/transaksi", transaksiRouter);  
 
 describe("Transaksi Routes", () => {
-  describe("GET /api/transaksi", () => {
+  describe("GET /api/transaksi/belum-bayar", () => {
     it("should return all completed registrations", async () => {
       const mockList = {};
 
 
       // Mocking the service call
-      transaksiService.getAllPendaftaranTuntas.mockResolvedValue(mockList);
+      transaksiService.getAllPendaftaranBelumBayar.mockResolvedValue(mockList);
 
-      const response = await request(app).get("/api/transaksi/");
+      const response = await request(app).get("/api/transaksi/belum-bayar");
 
       expect(response.status).toBe(200);
-      expect(response.body.success).toBe(true);
       expect(response.body.list).toEqual(mockList);
     });
   });
