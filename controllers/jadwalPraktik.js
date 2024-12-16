@@ -15,9 +15,28 @@ export const getAllJadwalPraktik = async (req, res) => {
 
 export const getJadwalPraktik = async (req, res) => {
   const { id_pegawai } = req.params;
+  const { day } = req.query;
 
-  const jadwalPraktik = await jadwalPraktikService.getJadwalPraktik(id_pegawai);
-  const dokter = await pegawaiService.getDokterById(id_pegawai);
+  let jadwalPraktik, dokter;
+  if (day === "today") {
+    jadwalPraktik = await jadwalPraktikService.getJadwalPraktik(
+      id_pegawai,
+      day
+    );
+    dokter = await pegawaiService.getDokterById(id_pegawai);
+  } else if (day === "tomorrow") {
+    jadwalPraktik = await jadwalPraktikService.getJadwalPraktik(
+      id_pegawai,
+      day
+    );
+    dokter = await pegawaiService.getDokterById(id_pegawai);
+  } else {
+    jadwalPraktik = await jadwalPraktikService.getJadwalPraktik(
+      id_pegawai,
+      "tomorrow"
+    );
+    dokter = await pegawaiService.getDokterById(id_pegawai);
+  }
   return res.json({ ...dokter, jadwal_praktik: jadwalPraktik });
 };
 
