@@ -21,8 +21,10 @@ describe("Transaksi Routes", () => {
 
       const response = await request(app).get("/api/transaksi/belum-bayar");
 
+      console.log(response);
+
       expect(response.status).toBe(200);
-      expect(response.body.list).toEqual(mockList);
+      expect(response.body).toEqual(mockList);
     });
   });
 

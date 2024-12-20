@@ -35,7 +35,7 @@ describe("Transaksi Controller", ()=>{
             await transaksiController.getAllPendaftaranBelumBayar(req, res);
 
             expect(transaksiService.getAllPendaftaranBelumBayar).toHaveBeenCalled();
-            expect(res.json).toHaveBeenCalledWith({list :mockList});
+            expect(res.json).toHaveBeenCalledWith(mockList);
         });
     });
 

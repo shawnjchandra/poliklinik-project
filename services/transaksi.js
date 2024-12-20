@@ -27,19 +27,19 @@ export const getTransaksi = async ({ id_pendaftaran }) => {
 // export const getAllTransaksi = async ({})
 
 // ==================================================================
-export const checkTodayTransaksi = async ({ id_pendaftaran }) => {
-  console.log("id pendaftaran" + id_pendaftaran);
+// export const checkTodayTransaksi = async ({ id_pendaftaran }) => {
+//   console.log("id pendaftaran" + id_pendaftaran);
 
-  const isExists = await transaksiRepo.checkTodayTransaksi({ id_pendaftaran });
+//   const isExists = await transaksiRepo.checkTodayTransaksi({ id_pendaftaran });
 
-  let transaksi;
-  if (isExists.rows[0] != null) {
-    transaksi = await transaksiRepo.getTransaksi({ id_pendaftaran });
-  } else {
-    transaksi = await transaksiRepo.generateTransaksi({ id_pendaftaran });
-  }
-  console.log("isExists " + isExists);
+//   let transaksi;
+//   if (isExists.rows[0] != null) {
+//     transaksi = await transaksiRepo.getTransaksi({ id_pendaftaran });
+//   } else {
+//     transaksi = await transaksiRepo.generateTransaksi({ id_pendaftaran });
+//   }
+//   console.log("isExists " + isExists);
 
-  return transaksi;
-};
+//   return transaksi;
+// };
 // ==================================================================

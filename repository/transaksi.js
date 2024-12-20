@@ -21,51 +21,12 @@ export const getPendaftaranTuntas = async ({ id_pendaftaran }) => {
   return queryResult.rows;
 };
 
-// Default in ke tunai dulu aja gitu?
-export const generateTransaksi = async ({ id_pendaftaran }) => {
-  console.log("dalam generate transaksi");
-
-  const biaya_total = await getBiayaTotal(id_pendaftaran);
-
-  console.log(biaya_total);
-
-  const queryText = "INSERT INTO Transaksi (metode, biaya_total,id_pendaftaran) VALUES ($1, $2, $3)";
-
-  //TODO:  Default ketika pertama kali generate (nanti deh edit sql nya)
-  const values = ["tunai", biaya_total, id_pendaftaran];
-
-  const queryResult = await pool.query(queryText, values);
-
-  return queryResult;
-};
-
 export const insertTransaksi = async ({ id_pendaftaran, biaya_total, metode }) => {
   const queryText = "INSERT INTO Transaksi (metode, biaya_total, id_pendaftaran) VALUES ($1, $2, $3) ";
 
   const values = [metode, biaya_total, id_pendaftaran];
 
   const queryResult = await pool.query(queryText, values);
-
-  return queryResult;
-};
-
-// Untuk sementara ini dulu, aku belum nyamain yang kayak di pendaftaran
-export const checkTodayTransaksi = async ({ id_pendaftaran }) => {
-  const queryText = "SELECT * FROM Transaksi tr JOIN Pendaftaran p ON tr.id_pendaftaran = p.id_pendaftaran WHERE tr.id_pendaftaran = $1 AND P.tanggal_daftar = CURRENT_DATE";
-
-  const values = [id_pendaftaran];
-
-  const queryResult = await pool.query(queryText, values);
-  console.log(queryResult);
-
-  return queryResult;
-};
-
-export const getAllTransaksi = async () => {
-  const queryText = "SELECT * FROM Transaksi tr JOIN Pendaftaran p ON tr.id_pendaftaran = p.id_pendaftaran WHERE p.tanggal_daftar = CURRENT_DATE";
-
-  const queryResult = await pool.query(queryText);
-  console.log(queryResult);
 
   return queryResult;
 };
