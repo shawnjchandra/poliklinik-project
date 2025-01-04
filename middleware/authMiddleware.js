@@ -1,4 +1,5 @@
 import { UnauthorizedError } from "../errors/UnauthorizedError.js";
+
 import { verifyToken } from "../utils/token/token.js";
 import { ForbiddenError } from "../errors/ForbiddenError.js";
 
@@ -33,7 +34,6 @@ export const authMiddleware = (authRole) => {
 
       req.user = payload;
 
-      console.log(req.user);
       next();
     } catch (err) {
       throw new UnauthorizedError("invalid token");
