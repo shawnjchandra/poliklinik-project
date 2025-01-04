@@ -19,6 +19,7 @@ export const getPasienByEmail = async (email) => {
   return queryResult;
 };
 
+
 export const getPasienById = async (id_pasien) => {
   const queryText = "SELECT * FROM Pasien WHERE id_pasien=$1";
   const values = [id_pasien];
@@ -27,6 +28,7 @@ export const getPasienById = async (id_pasien) => {
 
   return queryResult;
 };
+
 
 export const getPassword = async ({ password }) => {
   const queryText = "SELECT * FROM Pasien WHERE password LIKE $1";
@@ -45,3 +47,4 @@ export const getAllPasien = async () => {
 
   return queryResult;
 };
+

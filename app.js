@@ -76,6 +76,7 @@ app.use("/api/kelurahan", kelurahanRoute);
 app.use("/api/kecamatan", kecamatanRoute);
 
 // app.get("/test", authMiddleware);
+import { authMiddleware } from "./middleware/authMiddleware.js";
 
 app.use("/api/pendaftaran", pendaftaranRoute);
 

@@ -1,7 +1,6 @@
-import { BadRequestError } from "../../errors/BadRequestError.js";
 import { isValidDate } from "../../utils/dateValidator.js";
 import { isValidEmail } from "../../utils/emailValidator.js";
-import { isPassFormatCorrect, isPasswordInjection } from "../../utils/passwordValidator.js";
+import { BadRequestError } from "../../errors/BadRequestError.js";
 
 export const validateRegister = async (req, res, next) => {
   const requiredField = ["nama", "no_telp", "email", "jenis_kelamin", "tanggal_lahir", "id_kelurahan", "password"];
@@ -11,10 +10,13 @@ export const validateRegister = async (req, res, next) => {
     }
   }
 
+
   const { email, jenis_kelamin, tanggal_lahir, password } = req.body;
+
   if (jenis_kelamin !== "perempuan" && jenis_kelamin !== "laki") {
     throw new BadRequestError("jenis_kelamin must be either perempuan or laki");
   }
+
 
   if (!isPassFormatCorrect(password)) {
     throw new BadRequestError("Password format doesn`t seem to be correct");
